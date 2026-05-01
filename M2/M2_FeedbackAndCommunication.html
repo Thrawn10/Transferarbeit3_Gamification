@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback &amp; Kommunikation – Prototyp M2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: #0b1520;
+      color: #c9d8e8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(168,85,247,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(56,189,248,.05) 0%, transparent 60%),
+        radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, auto, 28px 28px;
+    }
+    header {
+      background: linear-gradient(135deg, #060d18 0%, #0d1b2a 60%, #111827 100%);
+      padding: 14px 24px;
+      border-bottom: 1px solid rgba(168,85,247,.15);
+      box-shadow: 0 2px 24px rgba(0,0,0,.7);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 16px; font-weight: 700; color: #e2f0fa; }
+    header .sub { font-size: 11px; opacity: .5; margin-top: 2px; color: #b09fcc; }
+    .back-link {
+      font-size: 12px;
+      color: #c084fc;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1px solid rgba(168,85,247,.25);
+      border-radius: 8px;
+      background: rgba(168,85,247,.07);
+      transition: background .2s;
+    }
+    .back-link:hover { background: rgba(168,85,247,.14); }
+    .placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .icon {
+      font-size: 56px;
+      opacity: .3;
+    }
+    .placeholder h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #c084fc;
+    }
+    .placeholder p {
+      font-size: 13px;
+      color: #7baec8;
+      max-width: 400px;
+      line-height: 1.65;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(168,85,247,.12);
+      color: #c084fc;
+      border: 1px solid rgba(168,85,247,.25);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Feedback &amp; Kommunikation</h1>
+      <div class="sub">Modul 2 – Prototyp (in Arbeit)</div>
+    </div>
+    <a href="../index.html" class="back-link">&#8592; Übersicht</a>
+  </header>
+  <div class="placeholder">
+    <div class="icon">&#128172;</div>
+    <div class="badge">Modul 2 – In Arbeit</div>
+    <h2>Feedback &amp; Kommunikation</h2>
+    <p>Dieser Prototyp befindet sich noch in der Entwicklung. Hier wird ein strukturiertes Feedback-System zwischen Lernenden und Ausbildenden sowie asynchrone Kommunikationskanäle implementiert.</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototypen-Übersicht – Gamification Lernplattform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: #0b1520;
+      color: #c9d8e8;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(56,189,248,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(168,85,247,.05) 0%, transparent 60%),
+        radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, auto, 28px 28px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #060d18 0%, #0d1b2a 60%, #111827 100%);
+      padding: 28px 40px;
+      border-bottom: 1px solid rgba(56,189,248,.15);
+      box-shadow: 0 2px 24px rgba(0,0,0,.7), 0 1px 0 rgba(56,189,248,.12);
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e2f0fa;
+      letter-spacing: .01em;
+    }
+
+    header p {
+      font-size: 12px;
+      color: #7baec8;
+      margin-top: 5px;
+      letter-spacing: .02em;
+      opacity: .8;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 32px 64px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(56,189,248,.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(13,27,42,.9) 0%, rgba(15,23,42,.95) 100%);
+      border: 1px solid rgba(56,189,248,.13);
+      border-radius: 14px;
+      padding: 24px 22px;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      opacity: 0;
+      transition: opacity .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56,189,248,.4);
+      box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(56,189,248,.12), 0 0 24px rgba(56,189,248,.08);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card.m1::before { background: radial-gradient(ellipse at top left, rgba(14,165,233,.06) 0%, transparent 60%); }
+    .card.m2::before { background: radial-gradient(ellipse at top left, rgba(168,85,247,.06) 0%, transparent 60%); }
+    .card.m3::before { background: radial-gradient(ellipse at top left, rgba(251,146,60,.06) 0%, transparent 60%); }
+    .card.m4::before { background: radial-gradient(ellipse at top left, rgba(52,211,153,.06) 0%, transparent 60%); }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .card.m1 .card-badge { background: rgba(14,165,233,.12); color: #38bdf8; border: 1px solid rgba(14,165,233,.25); }
+    .card.m2 .card-badge { background: rgba(168,85,247,.12); color: #c084fc; border: 1px solid rgba(168,85,247,.25); }
+    .card.m3 .card-badge { background: rgba(251,146,60,.12); color: #fb923c; border: 1px solid rgba(251,146,60,.25); }
+    .card.m4 .card-badge { background: rgba(52,211,153,.12); color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+
+    .card-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .card.m1 .dot { background: #38bdf8; }
+    .card.m2 .dot { background: #c084fc; }
+    .card.m3 .dot { background: #fb923c; }
+    .card.m4 .dot { background: #34d399; }
+
+    .card h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2f0fa;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      font-size: 12px;
+      color: #7baec8;
+      line-height: 1.6;
+    }
+
+    .card-status {
+      margin-top: 18px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-ready { color: #4ade80; }
+    .status-wip    { color: #facc15; }
+
+    .card-arrow {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      opacity: .25;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .card:hover .card-arrow {
+      opacity: .7;
+      transform: translateY(-50%) translateX(3px);
+    }
+
+    .card.disabled {
+      pointer-events: none;
+      opacity: .5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 11px;
+      color: rgba(120,150,180,.4);
+      border-top: 1px solid rgba(56,189,248,.06);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Prototypen-Übersicht · Gamification Lernplattform</h1>
+  <p>HS25 – TA3 · Design Cycle · Informatiker/in EFZ Applikationsentwicklung</p>
+</header>
+
+<main>
+  <div class="section-label">Module auswählen</div>
+  <div class="grid">
+
+    <a href="M1/M1_SkillTree.html" class="card m1">
+      <div class="card-badge"><span class="dot"></span>Modul 1</div>
+      <h2>Skill Tree</h2>
+      <p>Fortschrittsvisualisierung &amp; Kompetenztracking – interaktiver Skill-Baum mit allen Handlungskompetenzen des Bildungsplans.</p>
+      <div class="card-status status-ready">&#10003; Verfügbar</div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="M2/M2_FeedbackAndCommunication.html" class="card m2">
+      <div class="card-badge"><span class="dot"></span>Modul 2</div>
+      <h2>Feedback &amp; Kommunikation</h2>
+      <p>Strukturiertes Feedback zwischen Lernenden und Ausbildenden sowie asynchrone Kommunikationskanäle.</p>
+      <div class="card-status status-wip">&#9679; In Arbeit</div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="M3/M3_ExtendedGamificationElements.html" class="card m3">
+      <div class="card-badge"><span class="dot"></span>Modul 3</div>
+      <h2>Erweiterte Gamification-Elemente</h2>
+      <p>Badges, Achievements, XP-Levelsystem und Belohnungsmechanismen zur Lernmotivation.</p>
+      <div class="card-status status-wip">&#9679; In Arbeit</div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="M4_NotificationAndSocialComparison/M4_NotificationAndSocialComparison.html" class="card m4">
+      <div class="card-badge"><span class="dot"></span>Modul 4</div>
+      <h2>Benachrichtigungen &amp; Sozialer Vergleich</h2>
+      <p>Push-Benachrichtigungen, Erinnerungen und anonymisierte Leistungsvergleiche innerhalb der Klasse.</p>
+      <div class="card-status status-wip">&#9679; In Arbeit</div>
+      <span class="card-arrow">›</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>HS25 · FFHS · TA3 – Design Cycle Prototypen</footer>
+
+</body>
+</html>
