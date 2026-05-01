@@ -5,98 +5,696 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback &amp; Kommunikation – Prototyp M2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: #0b1520;
-      color: #c9d8e8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(168,85,247,.07) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(56,189,248,.05) 0%, transparent 60%),
-        radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: auto, auto, 28px 28px;
-    }
-    header {
-      background: linear-gradient(135deg, #060d18 0%, #0d1b2a 60%, #111827 100%);
-      padding: 14px 24px;
-      border-bottom: 1px solid rgba(168,85,247,.15);
-      box-shadow: 0 2px 24px rgba(0,0,0,.7);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 { font-size: 16px; font-weight: 700; color: #e2f0fa; }
-    header .sub { font-size: 11px; opacity: .5; margin-top: 2px; color: #b09fcc; }
-    .back-link {
-      font-size: 12px;
-      color: #c084fc;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid rgba(168,85,247,.25);
-      border-radius: 8px;
-      background: rgba(168,85,247,.07);
-      transition: background .2s;
-    }
-    .back-link:hover { background: rgba(168,85,247,.14); }
-    .placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 48px 24px;
-      text-align: center;
-    }
-    .icon {
-      font-size: 56px;
-      opacity: .3;
-    }
-    .placeholder h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #c084fc;
-    }
-    .placeholder p {
-      font-size: 13px;
-      color: #7baec8;
-      max-width: 400px;
-      line-height: 1.65;
-    }
-    .badge {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: rgba(168,85,247,.12);
-      color: #c084fc;
-      border: 1px solid rgba(168,85,247,.25);
-    }
-  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="M2_FeedbackAndCommunication.css">
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Feedback &amp; Kommunikation</h1>
-      <div class="sub">Modul 2 – Prototyp (in Arbeit)</div>
-    </div>
-    <a href="../index.html" class="back-link">&#8592; Übersicht</a>
-  </header>
-  <div class="placeholder">
-    <div class="icon">&#128172;</div>
-    <div class="badge">Modul 2 – In Arbeit</div>
-    <h2>Feedback &amp; Kommunikation</h2>
-    <p>Dieser Prototyp befindet sich noch in der Entwicklung. Hier wird ein strukturiertes Feedback-System zwischen Lernenden und Ausbildenden sowie asynchrone Kommunikationskanäle implementiert.</p>
+
+<!-- ═══════════════════════════════════════════════ HEADER -->
+<header>
+  <div>
+    <h1>Feedback &amp; Kommunikation</h1>
+    <div class="sub">Modul 2 – Feedback-System (Prototyp)</div>
   </div>
+  <a href="../index.html" class="back-link">&#8592; Übersicht</a>
+</header>
+
+<!-- ═══════════════════════════════════════════════ ROLE TOGGLE -->
+<div class="role-toggle-wrap">
+  <button class="role-btn active" id="btn-lernende" onclick="switchRole('lernende')">
+    👤 Lernende/r
+  </button>
+  <button class="role-btn" id="btn-praxisbildner" onclick="switchRole('praxisbildner')">
+    👔 Praxisbildner/in
+  </button>
+  <div class="sim-user" id="sim-user">
+    <div class="sim-avatar learner" id="sim-avatar">AM</div>
+    <span id="sim-name">Anna Meier (simuliert)</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ LERNENDE VIEW -->
+<div class="view active" id="view-lernende">
+  <div class="content">
+    <div class="section-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-title">Mein Feedback</span>
+        <span class="unread-badge" id="unread-count" style="display:none"></span>
+      </div>
+      <div class="filter-bar" style="margin-bottom:0">
+        <select id="l-filter-kompetenz" onchange="renderLernende()">
+          <option value="">Alle Kompetenzen</option>
+        </select>
+        <select id="l-filter-typ" onchange="renderLernende()">
+          <option value="">Alle Typen</option>
+          <option value="anerkennung">🟢 Anerkennung</option>
+          <option value="entwicklungsimpuls">🔵 Entwicklungsimpuls</option>
+        </select>
+      </div>
+    </div>
+    <div class="timeline" id="timeline-l"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PRAXISBILDNER VIEW -->
+<div class="view" id="view-praxisbildner">
+  <div class="content">
+
+    <!-- Frequency indicators -->
+    <div class="freq-section">
+      <div class="freq-title">Feedback-Frequenz pro Lernende/r</div>
+      <div class="freq-grid" id="freq-grid"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Top bar: filters + new button -->
+    <div class="pb-topbar">
+      <span class="section-title">Feedback-Historie</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="filter-bar" style="margin-bottom:0">
+          <select id="pb-filter-lernende" onchange="renderPraxisbildner()">
+            <option value="">Alle Lernenden</option>
+          </select>
+          <select id="pb-filter-kompetenz" onchange="renderPraxisbildner()">
+            <option value="">Alle Kompetenzen</option>
+          </select>
+          <select id="pb-filter-typ" onchange="renderPraxisbildner()">
+            <option value="">Alle Typen</option>
+            <option value="anerkennung">🟢 Anerkennung</option>
+            <option value="entwicklungsimpuls">🔵 Entwicklungsimpuls</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="openModal()">+ Neues Feedback erfassen</button>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline-pb"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ MODAL -->
+<dialog class="modal" id="modal" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title">Neues Feedback erfassen</h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Modal schliessen">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Lernende select -->
+      <div class="form-group">
+        <label class="form-label" for="m-lernende">Lernende/r</label>
+        <select class="form-select" id="m-lernende">
+          <option value="">— Bitte wählen —</option>
+          <option>Anna Meier</option>
+          <option>Luca Bernasconi</option>
+          <option>Jana Keller</option>
+          <option>Kevin Müller</option>
+        </select>
+      </div>
+
+      <!-- Kompetenz select -->
+      <div class="form-group">
+        <label class="form-label" for="m-kompetenz">Kompetenzbereich</label>
+        <select class="form-select" id="m-kompetenz">
+          <option value="">— Bitte wählen —</option>
+          <option>Applikationen entwickeln</option>
+          <option>Systemsicherheit</option>
+          <option>Projektmanagement</option>
+          <option>Datenbanken</option>
+          <option>Netzwerke konfigurieren</option>
+          <option>Testing &amp; Qualitätssicherung</option>
+        </select>
+      </div>
+
+      <!-- Feedback type toggle -->
+      <fieldset class="form-group typ-fieldset">
+        <legend class="form-label">Feedback-Typ</legend>
+        <div class="typ-toggle">
+          <button class="typ-btn active-anerkennung" id="m-btn-anerkennung"
+                  onclick="setModalTyp('anerkennung')">🟢 Anerkennung</button>
+          <button class="typ-btn" id="m-btn-entwicklungsimpuls"
+                  onclick="setModalTyp('entwicklungsimpuls')">🔵 Entwicklungsimpuls</button>
+        </div>
+      </fieldset>
+      <div class="form-group">
+        <div class="template-toggle-row" onclick="toggleTemplate()" role="switch"
+             aria-checked="false" id="template-toggle-row" tabindex="0"
+             onkeydown="if(event.key==='Enter'||event.key===' ')toggleTemplate()">
+          <div class="toggle-switch" id="template-switch"></div>
+          <span class="toggle-label">Strukturierte Vorlage verwenden</span>
+        </div>
+      </div>
+
+      <!-- Structured fields (hidden by default) -->
+      <div class="structured-fields" id="structured-fields" style="display:none">
+        <div class="form-group">
+          <label class="form-label" for="m-gut">Was ist gut gelaufen?</label>
+          <textarea class="form-textarea" id="m-gut" rows="2"
+                    placeholder="Konkrete Stärken und Erfolge…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m-verbessern">Was könnte verbessert werden?</label>
+          <textarea class="form-textarea" id="m-verbessern" rows="2"
+                    placeholder="Entwicklungsfelder und Hinweise…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m-naechster">Was ist der nächste Schritt?</label>
+          <textarea class="form-textarea" id="m-naechster" rows="2"
+                    placeholder="Konkrete nächste Handlung oder Ziel…"></textarea>
+        </div>
+      </div>
+
+      <!-- Free text (shown by default) -->
+      <div class="form-group" id="freetext-field">
+        <label class="form-label" for="m-freitext">Feedback-Text</label>
+        <textarea class="form-textarea" id="m-freitext" rows="4"
+                  placeholder="Feedback erfassen…"></textarea>
+      </div>
+
+      <button class="btn-save" onclick="saveFeedback()">Feedback speichern</button>
+    </div>
+</dialog>
+
+<!-- Toast -->
+<output id="toast" aria-live="polite"></output>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+const KOMPETENZEN = [
+  'Applikationen entwickeln',
+  'Systemsicherheit',
+  'Projektmanagement',
+  'Datenbanken',
+  'Netzwerke konfigurieren',
+  'Testing & Qualitätssicherung'
+];
+
+const LERNENDE = ['Anna Meier', 'Luca Bernasconi', 'Jana Keller', 'Kevin Müller'];
+
+// Simulated «today» date consistent with demo data
+const TODAY = new Date('2026-05-01');
+
+// ═══════════════════════════════════════════════════════════════
+// STATE  (no persistence – page reload resets everything)
+// ═══════════════════════════════════════════════════════════════
+let nextId = 9;
+
+const state = {
+  role: 'lernende',
+  modalTyp: 'anerkennung',
+  templateMode: false,
+  entries: [
+    {
+      id: 1,
+      date: '2026-04-22',
+      pbName: 'Sarah Vogel',
+      lernendeName: 'Anna Meier',
+      kompetenz: 'Applikationen entwickeln',
+      typ: 'anerkennung',
+      text: 'Anna hat diese Woche selbständig eine REST-API mit JWT-Authentifizierung implementiert. Der Code ist sauber strukturiert, gut kommentiert und die Testabdeckung liegt bei über 80 %. Ein echter Meilenstein in ihrer Entwicklung!',
+      structured: null,
+      gelesen: false,
+      reaktion: null
+    },
+    {
+      id: 2,
+      date: '2026-04-10',
+      pbName: 'Thomas Rüegg',
+      lernendeName: 'Anna Meier',
+      kompetenz: 'Systemsicherheit',
+      typ: 'entwicklungsimpuls',
+      text: null,
+      structured: {
+        gut: 'Anna versteht die Grundkonzepte der Verschlüsselung sehr gut und setzt HTTPS konsequent ein.',
+        verbessern: 'Bei der serverseitigen Inputvalidierung besteht Verbesserungspotenzial. SQL-Injection-Prävention und sichere Fehlerbehandlung sollten vertieft werden.',
+        naechster: 'OWASP Top-10-Checkliste eigenständig durcharbeiten und ein kleines Beispielprojekt mit gezielten Sicherheitsmassnahmen erstellen.'
+      },
+      gelesen: true,
+      reaktion: 'Verstanden'
+    },
+    {
+      id: 3,
+      date: '2026-04-15',
+      pbName: 'Thomas Rüegg',
+      lernendeName: 'Luca Bernasconi',
+      kompetenz: 'Projektmanagement',
+      typ: 'anerkennung',
+      text: 'Luca hat das Sprint-Planning für das aktuelle Teilprojekt ausgezeichnet moderiert. Er hat alle Teammitglieder aktiv einbezogen, die Aufgaben klar priorisiert und Abhängigkeiten sichtbar gemacht. Kompetenz im Aufbau – weiter so!',
+      structured: null,
+      gelesen: false,
+      reaktion: null
+    },
+    {
+      id: 4,
+      date: '2026-04-01',
+      pbName: 'Sarah Vogel',
+      lernendeName: 'Luca Bernasconi',
+      kompetenz: 'Datenbanken',
+      typ: 'entwicklungsimpuls',
+      text: null,
+      structured: {
+        gut: 'Die grundlegenden SQL-Abfragen sitzen gut und Luca arbeitet zuverlässig mit bestehenden Datenbankstrukturen.',
+        verbessern: 'Komplexere Joins und Transaktionsmanagement bereiten noch Schwierigkeiten. Performance-Optimierung (Indexe, Query-Plan) sollte vertieft werden.',
+        naechster: 'Drei Datenbankübungen mit Multi-Table-Joins und Subqueries selbständig lösen und die Ergebnisse mit dem Praxisbildner besprechen.'
+      },
+      gelesen: true,
+      reaktion: 'Habe Rückfragen'
+    },
+    {
+      id: 5,
+      date: '2026-04-22',
+      pbName: 'Thomas Rüegg',
+      lernendeName: 'Jana Keller',
+      kompetenz: 'Applikationen entwickeln',
+      typ: 'entwicklungsimpuls',
+      text: null,
+      structured: {
+        gut: 'Jana setzt objektorientierte Konzepte zunehmend sicher ein. Vererbung und Polymorphismus werden korrekt angewendet.',
+        verbessern: 'Design Patterns (z. B. Repository, Factory) kommen noch nicht konsistent zum Einsatz. Code-Reviews zeigen gelegentlich unnötige Redundanzen.',
+        naechster: 'Ein bestehendes Ticket als Refactoring-Aufgabe bearbeiten und dabei bewusst ein passendes Design Pattern einsetzen.'
+      },
+      gelesen: false,
+      reaktion: null
+    },
+    {
+      id: 6,
+      date: '2026-04-05',
+      pbName: 'Sarah Vogel',
+      lernendeName: 'Jana Keller',
+      kompetenz: 'Testing & Qualitätssicherung',
+      typ: 'anerkennung',
+      text: 'Jana hat für das aktuelle Feature eine vollständige Testsuite mit Unit- und Integrationstests erstellt. Die Testabdeckung liegt bei 87 % – ein starkes Resultat. Meilenstein erreicht!',
+      structured: null,
+      gelesen: true,
+      reaktion: 'Danke'
+    },
+    {
+      id: 7,
+      date: '2026-03-28',
+      pbName: 'Thomas Rüegg',
+      lernendeName: 'Kevin Müller',
+      kompetenz: 'Netzwerke konfigurieren',
+      typ: 'anerkennung',
+      text: 'Kevin hat eigenständig ein VLAN-Konzept für das Büronetzwerk ausgearbeitet, dokumentiert und erfolgreich implementiert. Die Lösung ist praxistauglich, skalierbar und nachvollziehbar beschrieben. Sehr professionelle Arbeit.',
+      structured: null,
+      gelesen: true,
+      reaktion: 'Verstanden'
+    },
+    {
+      id: 8,
+      date: '2026-04-20',
+      pbName: 'Sarah Vogel',
+      lernendeName: 'Kevin Müller',
+      kompetenz: 'Projektmanagement',
+      typ: 'entwicklungsimpuls',
+      text: null,
+      structured: {
+        gut: 'Kevin hält Deadlines zuverlässig ein und kommuniziert frühzeitig, wenn Probleme auftauchen.',
+        verbessern: 'Das Führen von Statusberichten und das Dokumentieren von Entscheidungen muss konsequenter werden.',
+        naechster: 'Das nächste Projekt mit einem kurzen Entscheidungsprotokoll begleiten und dieses am Ende dem Praxisbildner vorlegen.'
+      },
+      gelesen: false,
+      reaktion: null
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+function init() {
+  populateFilters();
+  renderFrequencyGrid();
+  renderLernende();
+  renderPraxisbildner();
+}
+
+function populateFilters() {
+  const kOpts = KOMPETENZEN.map(k =>
+    `<option value="${escAttr(k)}">${escHtml(k)}</option>`
+  ).join('');
+  document.getElementById('l-filter-kompetenz').innerHTML += kOpts;
+  document.getElementById('pb-filter-kompetenz').innerHTML += kOpts;
+
+  const lOpts = LERNENDE.map(l =>
+    `<option value="${escAttr(l)}">${escHtml(l)}</option>`
+  ).join('');
+  document.getElementById('pb-filter-lernende').innerHTML += lOpts;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ROLE SWITCH
+// ═══════════════════════════════════════════════════════════════
+function switchRole(role) {
+  state.role = role;
+
+  document.getElementById('view-lernende').classList.toggle('active', role === 'lernende');
+  document.getElementById('view-praxisbildner').classList.toggle('active', role === 'praxisbildner');
+  document.getElementById('btn-lernende').classList.toggle('active', role === 'lernende');
+  document.getElementById('btn-praxisbildner').classList.toggle('active', role === 'praxisbildner');
+
+  const avatarEl = document.getElementById('sim-avatar');
+  const nameEl   = document.getElementById('sim-name');
+  if (role === 'lernende') {
+    avatarEl.className = 'sim-avatar learner';
+    avatarEl.textContent = 'AM';
+    nameEl.textContent = 'Anna Meier (simuliert)';
+  } else {
+    avatarEl.className = 'sim-avatar trainer';
+    avatarEl.textContent = 'TR';
+    nameEl.textContent = 'Thomas Rüegg (simuliert)';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER – LERNENDE VIEW
+// ═══════════════════════════════════════════════════════════════
+function renderLernende() {
+  const filterK = document.getElementById('l-filter-kompetenz').value;
+  const filterT = document.getElementById('l-filter-typ').value;
+
+  // Simulate logged-in learner = Anna Meier
+  const visible = state.entries
+    .filter(e => e.lernendeName === 'Anna Meier')
+    .filter(e => !filterK || e.kompetenz === filterK)
+    .filter(e => !filterT || e.typ === filterT)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const unread = state.entries.filter(e => e.lernendeName === 'Anna Meier' && !e.gelesen).length;
+  const badge  = document.getElementById('unread-count');
+  badge.textContent  = unread > 0 ? `${unread} ungelesen` : '';
+  badge.style.display = unread > 0 ? '' : 'none';
+
+  const container = document.getElementById('timeline-l');
+  container.innerHTML = visible.length
+    ? visible.map(e => renderCard(e, 'lernende')).join('')
+    : '<div class="empty-state">Keine Einträge für die gewählten Filter.</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER – PRAXISBILDNER VIEW
+// ═══════════════════════════════════════════════════════════════
+function renderPraxisbildner() {
+  const filterL = document.getElementById('pb-filter-lernende').value;
+  const filterK = document.getElementById('pb-filter-kompetenz').value;
+  const filterT = document.getElementById('pb-filter-typ').value;
+
+  const visible = state.entries
+    .filter(e => !filterL || e.lernendeName === filterL)
+    .filter(e => !filterK || e.kompetenz === filterK)
+    .filter(e => !filterT || e.typ === filterT)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const container = document.getElementById('timeline-pb');
+  container.innerHTML = visible.length
+    ? visible.map(e => renderCard(e, 'praxisbildner')).join('')
+    : '<div class="empty-state">Keine Einträge für die gewählten Filter.</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER – SINGLE CARD
+// ═══════════════════════════════════════════════════════════════
+function renderCard(e, role) {
+  const isUnread  = !e.gelesen;
+  const typLabel  = e.typ === 'anerkennung' ? '🟢 Anerkennung' : '🔵 Entwicklungsimpuls';
+  const dateStr   = formatDate(e.date);
+
+  // Body content
+  let body = '';
+  if (e.structured) {
+    body = '<div class="fb-structured">';
+    if (e.structured.gut)
+      body += `<div class="fb-structured-row">
+        <span class="fb-structured-label">Was gut gelaufen ist</span>
+        <span class="fb-structured-value">${escHtml(e.structured.gut)}</span>
+      </div>`;
+    if (e.structured.verbessern)
+      body += `<div class="fb-structured-row">
+        <span class="fb-structured-label">Was verbessert werden könnte</span>
+        <span class="fb-structured-value">${escHtml(e.structured.verbessern)}</span>
+      </div>`;
+    if (e.structured.naechster)
+      body += `<div class="fb-structured-row">
+        <span class="fb-structured-label">Nächster Schritt</span>
+        <span class="fb-structured-value">${escHtml(e.structured.naechster)}</span>
+      </div>`;
+    body += '</div>';
+  } else if (e.text) {
+    body = `<p class="fb-text">${escHtml(e.text)}</p>`;
+  }
+
+  // Footer content
+  let footer = '';
+  if (role === 'lernende') {
+    if (isUnread) {
+      footer += `<button class="btn-read" onclick="markRead(${e.id})">✓ Als gelesen markieren</button>`;
+    }
+    if (e.reaktion) {
+      footer += `<div class="reaction-display">Reaktion gespeichert:&ensp;<span class="reaction-pill">${escHtml(e.reaktion)}</span></div>`;
+    } else {
+      footer += `<div class="reaction-chips">
+        <button class="chip" onclick="setReaction(${e.id},'Verstanden')">👍 Verstanden</button>
+        <button class="chip" onclick="setReaction(${e.id},'Habe Rückfragen')">❓ Habe Rückfragen</button>
+        <button class="chip" onclick="setReaction(${e.id},'Danke')">🙏 Danke</button>
+      </div>`;
+    }
+  } else {
+    // Praxisbildner: read status + learner reaction
+    let statusHtml;
+    if (e.gelesen) {
+      const reactionPart = e.reaktion
+        ? `<span class="reaction-info">· Reaktion: <strong>${escHtml(e.reaktion)}</strong></span>`
+        : '';
+      statusHtml = `<span class="status-read">✓ Gelesen</span>${reactionPart}`;
+    } else {
+      statusHtml = `<span class="status-unread">⏳ Noch nicht gelesen</span>`;
+    }
+    footer = statusHtml;
+  }
+
+  return `
+<div class="fb-card${isUnread ? ' unread' : ''}" id="card-${e.id}">
+  <div class="fb-card-header">
+    <div class="fb-meta">
+      <span class="fb-date">${dateStr}</span>
+      ${role === 'praxisbildner'
+        ? `<span class="fb-author">→ ${escHtml(e.lernendeName)}</span>`
+        : `<span class="fb-author">von ${escHtml(e.pbName)}</span>`}
+      <span class="badge-typ ${e.typ}">${typLabel}</span>
+      <span class="badge-kompetenz">${escHtml(e.kompetenz)}</span>
+    </div>
+    ${isUnread && role === 'lernende' ? '<span class="badge-unread">Neu</span>' : ''}
+  </div>
+  <div class="fb-card-body">${body}</div>
+  ${footer ? `<div class="fb-card-footer">${footer}</div>` : ''}
+</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════════════
+function markRead(id) {
+  const entry = state.entries.find(e => e.id === id);
+  if (!entry || entry.gelesen) return;
+
+  const card = document.getElementById(`card-${id}`);
+  if (card) card.classList.add('marking-read');
+
+  setTimeout(() => {
+    entry.gelesen = true;
+    renderLernende();
+  }, 420);
+
+  showToast('Als gelesen markiert');
+}
+
+function setReaction(id, reaction) {
+  const entry = state.entries.find(e => e.id === id);
+  if (!entry) return;
+  entry.reaktion = reaction;
+  entry.gelesen  = true;
+  renderLernende();
+  showToast(`Reaktion gespeichert: ${reaction}`);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FREQUENCY GRID
+// ═══════════════════════════════════════════════════════════════
+function renderFrequencyGrid() {
+  const grid = document.getElementById('freq-grid');
+  grid.innerHTML = LERNENDE.map(name => {
+    const initials = name.split(' ').map(p => p[0]).join('');
+    const latestDate = state.entries
+      .filter(e => e.lernendeName === name)
+      .reduce((best, e) => (!best || e.date > best ? e.date : best), null);
+
+    let daysHtml = '';
+    let warnClass = '';
+    if (latestDate) {
+      const days = Math.floor((TODAY - new Date(latestDate)) / 86400000);
+      if (days > 14) {
+        warnClass = ' warn';
+        daysHtml  = `<div class="freq-days warn"><span>⚠</span> Letztes: vor ${days} Tagen</div>`;
+      } else {
+        daysHtml  = `<div class="freq-days ok">✓ Letztes: vor ${days} Tagen</div>`;
+      }
+    } else {
+      warnClass = ' warn';
+      daysHtml  = `<div class="freq-days warn"><span>⚠</span> Noch kein Feedback</div>`;
+    }
+
+    return `<div class="freq-card${warnClass}">
+      <div class="freq-avatar">${escHtml(initials)}</div>
+      <div class="freq-info">
+        <div class="freq-name">${escHtml(name)}</div>
+        ${daysHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════
+function openModal() {
+  document.getElementById('modal').showModal();
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').close();
+  document.body.style.overflow = '';
+  resetModal();
+}
+
+// Close on backdrop click (click lands on the <dialog> element itself)
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+// Sync resetModal when native Escape key closes the dialog
+document.getElementById('modal').addEventListener('cancel', () => {
+  document.body.style.overflow = '';
+  resetModal();
+});
+
+function resetModal() {
+  document.getElementById('m-lernende').value   = '';
+  document.getElementById('m-kompetenz').value  = '';
+  document.getElementById('m-freitext').value   = '';
+  document.getElementById('m-gut').value        = '';
+  document.getElementById('m-verbessern').value = '';
+  document.getElementById('m-naechster').value  = '';
+  setModalTyp('anerkennung');
+  state.templateMode = false;
+  document.getElementById('template-switch').classList.remove('on');
+  document.getElementById('template-toggle-row').setAttribute('aria-checked', 'false');
+  document.getElementById('structured-fields').style.display = 'none';
+  document.getElementById('freetext-field').style.display    = '';
+}
+
+function setModalTyp(typ) {
+  state.modalTyp = typ;
+  document.getElementById('m-btn-anerkennung').className =
+    'typ-btn' + (typ === 'anerkennung' ? ' active-anerkennung' : '');
+  document.getElementById('m-btn-entwicklungsimpuls').className =
+    'typ-btn' + (typ === 'entwicklungsimpuls' ? ' active-entwicklungsimpuls' : '');
+}
+
+function toggleTemplate() {
+  state.templateMode = !state.templateMode;
+  document.getElementById('template-switch').classList.toggle('on', state.templateMode);
+  document.getElementById('template-toggle-row').setAttribute('aria-checked', String(state.templateMode));
+  document.getElementById('structured-fields').style.display = state.templateMode ? '' : 'none';
+  document.getElementById('freetext-field').style.display    = state.templateMode ? 'none' : '';
+}
+
+function saveFeedback() {
+  const lernende = document.getElementById('m-lernende').value;
+  const kompetenz = document.getElementById('m-kompetenz').value;
+
+  if (!lernende || !kompetenz) {
+    showToast('Bitte Lernende/r und Kompetenz auswählen.');
+    return;
+  }
+
+  let text = null;
+  let structured = null;
+
+  if (state.templateMode) {
+    const gut       = document.getElementById('m-gut').value.trim();
+    const verbessern = document.getElementById('m-verbessern').value.trim();
+    const naechster  = document.getElementById('m-naechster').value.trim();
+    if (!gut && !verbessern && !naechster) {
+      showToast('Bitte mindestens ein Feld der Vorlage ausfüllen.');
+      return;
+    }
+    structured = { gut, verbessern, naechster };
+  } else {
+    text = document.getElementById('m-freitext').value.trim();
+    if (!text) {
+      showToast('Bitte einen Feedback-Text eingeben.');
+      return;
+    }
+  }
+
+  state.entries.unshift({
+    id:            nextId++,
+    date:          '2026-05-01',
+    pbName:        'Thomas Rüegg',
+    lernendeName:  lernende,
+    kompetenz,
+    typ:           state.modalTyp,
+    text,
+    structured,
+    gelesen:       false,
+    reaktion:      null
+  });
+
+  closeModal();
+  renderPraxisbildner();
+  renderLernende();
+  renderFrequencyGrid();
+  showToast('Feedback wurde gespeichert');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00'); // avoid timezone shift
+  return d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function escHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function escAttr(str) {
+  return escHtml(str).replaceAll("'", '&#39;');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════
+init();
+</script>
 </body>
 </html>
