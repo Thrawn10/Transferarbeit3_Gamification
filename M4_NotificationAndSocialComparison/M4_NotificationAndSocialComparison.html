@@ -1,95 +1,800 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benachrichtigungen &amp; Sozialer Vergleich – Prototyp M4</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: #0b1520;
-      color: #c9d8e8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(52,211,153,.07) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(56,189,248,.05) 0%, transparent 60%),
-        radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: auto, auto, 28px 28px;
-    }
-    header {
-      background: linear-gradient(135deg, #060d18 0%, #0d1b2a 60%, #111827 100%);
-      padding: 14px 24px;
-      border-bottom: 1px solid rgba(52,211,153,.15);
-      box-shadow: 0 2px 24px rgba(0,0,0,.7);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 { font-size: 16px; font-weight: 700; color: #e2f0fa; }
-    header .sub { font-size: 11px; opacity: .5; margin-top: 2px; color: #7ac9a8; }
-    .back-link {
-      font-size: 12px;
-      color: #34d399;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid rgba(52,211,153,.25);
-      border-radius: 8px;
-      background: rgba(52,211,153,.07);
-      transition: background .2s;
-    }
-    .back-link:hover { background: rgba(52,211,153,.14); }
-    .placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 48px 24px;
-      text-align: center;
-    }
-    .icon { font-size: 56px; opacity: .3; }
-    .placeholder h2 { font-size: 22px; font-weight: 700; color: #34d399; }
-    .placeholder p {
-      font-size: 13px;
-      color: #7baec8;
-      max-width: 400px;
-      line-height: 1.65;
-    }
-    .badge {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: rgba(52,211,153,.12);
-      color: #34d399;
-      border: 1px solid rgba(52,211,153,.25);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modul 4 – Benachrichtigungen & sozialer Vergleich | BIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter','Segoe UI',system-ui,sans-serif;
+  background:#0b1520;color:#c9d8e8;
+  overflow-x:hidden;min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%,rgba(56,189,248,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%,rgba(168,85,247,.05) 0%,transparent 60%),
+    radial-gradient(circle,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:auto,auto,28px 28px;
+}
+
+/* ── Header ── */
+#hdr{
+  background:linear-gradient(135deg,#060d18 0%,#0d1b2a 60%,#111827 100%);
+  padding:14px 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 24px rgba(0,0,0,.7),0 1px 0 rgba(56,189,248,.12);
+  border-bottom:1px solid rgba(56,189,248,.15);
+}
+#hdr h1{font-size:16px;font-weight:700;color:#e2f0fa;letter-spacing:.01em}
+#hdr .sub{font-size:11px;opacity:.5;margin-top:2px;color:#7baec8;letter-spacing:.02em}
+.hdr-stat{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:7px 14px}
+.hdr-stat .num{font-size:18px;font-weight:700;color:#67e8f9}
+.hdr-stat .lbl{font-size:10px;color:#4a7a9a;line-height:1.3}
+.back-link{font-size:12px;color:#38bdf8;text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(56,189,248,.22);border-radius:8px;background:rgba(56,189,248,.06);transition:background .2s,border-color .2s;flex-shrink:0;white-space:nowrap}
+.back-link:hover{background:rgba(56,189,248,.13);border-color:rgba(56,189,248,.42)}
+
+/* ── Tabs ── */
+#tabs{display:flex;padding:0 24px;background:rgba(6,13,24,.8);border-bottom:1px solid rgba(56,189,248,.1);backdrop-filter:blur(8px);position:sticky;top:53px;z-index:90}
+.tab{padding:11px 20px;font-size:12px;font-weight:600;color:#3a5a74;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;letter-spacing:.03em;display:flex;align-items:center;gap:6px}
+.tab:hover{color:#7baec8}
+.tab.active{color:#38bdf8;border-bottom-color:#38bdf8}
+
+/* ── Layout ── */
+#main{padding:28px;max-width:1200px;margin:0 auto}
+.page{display:none}
+.page.active{display:block}
+
+/* ── Section headers ── */
+.sec{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:32px}
+.sec:first-child{margin-top:0}
+.sec-t{font-size:12px;font-weight:700;color:#4a7a9a;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.sec-l{flex:1;height:1px;background:linear-gradient(90deg,rgba(56,189,248,.2),transparent)}
+.sec-s{font-size:11px;color:#1e3a56;white-space:nowrap}
+
+/* ── Cards ── */
+.card{
+  background:linear-gradient(145deg,rgba(9,18,34,.95),rgba(14,26,48,.9));
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:20px;
+  position:relative;overflow:hidden;
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+
+/* ── PAGE 1: PEER BADGES ── */
+.peer-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.peer-layout{grid-template-columns:1fr}}
+
+/* Kontingent card */
+.kontingent-card{
+  background:linear-gradient(145deg,rgba(9,18,34,.95),rgba(14,28,52,.9));
+  border:1.5px solid rgba(56,189,248,.2);
+  border-radius:14px;padding:22px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.kontingent-title{font-size:13px;font-weight:700;color:#7dd3fc;margin-bottom:4px}
+.kontingent-sub{font-size:11px;color:#3a5a74}
+.kontingent-pips{display:flex;gap:8px;margin:4px 0}
+.kpip{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .2s;
+}
+.kpip.used{border-color:#1e3a56;background:rgba(255,255,255,.03);filter:grayscale(1) opacity(.4)}
+.kpip.avail{border-color:#38bdf8;background:rgba(56,189,248,.1);box-shadow:0 0 10px rgba(56,189,248,.25);cursor:pointer}
+.kpip.avail:hover{box-shadow:0 0 18px rgba(56,189,248,.5);transform:scale(1.08)}
+
+.vergabe-form{display:flex;flex-direction:column;gap:10px}
+.vf-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2a4a62}
+.vf-select{
+  background:rgba(255,255,255,.04);border:1px solid rgba(56,189,248,.2);
+  color:#c9d8e8;padding:9px 12px;border-radius:8px;font-size:12px;
+  font-family:inherit;cursor:pointer;width:100%;
+}
+.vf-select:focus{outline:none;border-color:#38bdf8}
+.vf-textarea{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  color:#c9d8e8;padding:9px 12px;border-radius:8px;font-size:12px;
+  font-family:inherit;resize:vertical;min-height:70px;width:100%;
+}
+.vf-textarea:focus{outline:none;border-color:rgba(56,189,248,.4)}
+.vf-textarea::placeholder{color:#2a4a62}
+.vf-btn{
+  background:linear-gradient(135deg,#1d4ed8,#2563eb);
+  color:#fff;border:none;border-radius:8px;padding:10px 18px;
+  font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;
+  font-family:inherit;letter-spacing:.02em;
+}
+.vf-btn:hover{background:linear-gradient(135deg,#1e40af,#1d4ed8);box-shadow:0 4px 16px rgba(37,99,235,.4)}
+.vf-btn:disabled{background:rgba(255,255,255,.05);color:#2a4a62;cursor:default;box-shadow:none}
+
+/* Badge emoji grid */
+.badge-emoji-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.be{
+  border:1.5px solid rgba(255,255,255,.08);border-radius:10px;
+  padding:10px 6px;text-align:center;cursor:pointer;
+  background:rgba(255,255,255,.03);transition:all .18s;
+}
+.be:hover,.be.sel{border-color:#38bdf8;background:rgba(56,189,248,.1);box-shadow:0 0 10px rgba(56,189,248,.2)}
+.be .icon{font-size:22px}
+.be .name{font-size:8.5px;color:#3a5a74;margin-top:3px;font-weight:600}
+
+/* Received badges */
+.received-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.rb-card{
+  background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:14px 10px;text-align:center;
+  transition:all .2s;cursor:default;
+}
+.rb-card.new-badge{border-color:rgba(245,158,11,.4);box-shadow:0 0 14px rgba(245,158,11,.15);animation:newBadgePulse 2.5s ease-in-out infinite}
+@keyframes newBadgePulse{0%,100%{box-shadow:0 0 14px rgba(245,158,11,.15)}50%{box-shadow:0 0 24px rgba(245,158,11,.35)}}
+.rb-icon{font-size:28px;margin-bottom:6px}
+.rb-name{font-size:11px;font-weight:700;color:#c9d8e8;margin-bottom:3px}
+.rb-count{font-size:10px;color:#3a5a74}
+.rb-season{font-size:9px;color:#1e3a56;margin-top:2px}
+.rb-new-chip{font-size:8px;font-weight:700;background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:1px 6px;margin-top:4px;display:inline-block}
+
+/* ── PAGE 2: JAHRGANGSÜBERSICHT ── */
+.cohort-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+
+.cohort-card{
+  background:linear-gradient(145deg,rgba(9,18,34,.95),rgba(14,26,48,.9));
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:20px;
+  transition:border-color .2s,box-shadow .2s;cursor:pointer;
+}
+.cohort-card:hover{border-color:rgba(56,189,248,.3);box-shadow:0 4px 20px rgba(56,189,248,.1)}
+.cohort-card.highlight{border-color:rgba(56,189,248,.35);box-shadow:0 0 20px rgba(56,189,248,.12)}
+
+.cc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cc-badge{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid;flex-shrink:0}
+.cc-info .cc-name{font-size:13px;font-weight:700;color:#e2f0fa}
+.cc-info .cc-meta{font-size:10.5px;color:#3a5a74;margin-top:2px}
+.cc-you{font-size:9px;font-weight:700;background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.25);border-radius:6px;padding:1px 6px;margin-left:6px}
+
+/* Lehrberuf progress */
+.cc-prog{margin-bottom:12px}
+.cc-prog-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cc-prog-lbl{font-size:10px;color:#3a5a74;min-width:50px}
+.cc-prog-track{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.cc-prog-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.cc-prog-val{font-size:10px;font-weight:700;min-width:30px;text-align:right}
+
+/* Lehrberuf colors */
+.lb-app{color:#38bdf8} .lb-app .cc-prog-fill,.lb-app-fill{background:linear-gradient(90deg,#0ea5e9,#38bdf8);box-shadow:0 0 6px rgba(56,189,248,.4)}
+.lb-plt{color:#a78bfa} .lb-plt .cc-prog-fill,.lb-plt-fill{background:linear-gradient(90deg,#7c3aed,#a78bfa);box-shadow:0 0 6px rgba(167,139,250,.4)}
+.lb-med{color:#f472b6} .lb-med .cc-prog-fill,.lb-med-fill{background:linear-gradient(90deg,#db2777,#f472b6);box-shadow:0 0 6px rgba(244,114,182,.4)}
+.lb-ddb{color:#4ade80} .lb-ddb .cc-prog-fill,.lb-ddb-fill{background:linear-gradient(90deg,#16a34a,#4ade80);box-shadow:0 0 6px rgba(74,222,128,.4)}
+.lb-pbs{color:#fb923c} .lb-pbs .cc-prog-fill,.lb-pbs-fill{background:linear-gradient(90deg,#ea580c,#fb923c);box-shadow:0 0 6px rgba(251,146,60,.4)}
+
+/* Jahrgangs-dots */
+.cc-dots{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.cc-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid transparent;flex-shrink:0;transition:all .2s}
+.cc-dot.bronze{background:#cd7f32;border-color:#92400e;box-shadow:0 0 4px rgba(205,127,50,.5)}
+.cc-dot.silver{background:#adb5bd;border-color:#6b7280;box-shadow:0 0 4px rgba(173,181,189,.4)}
+.cc-dot.gold{background:#ffd700;border-color:#b45309;box-shadow:0 0 5px rgba(255,215,0,.6)}
+.cc-dot.platinum{background:#67e8f9;border-color:#0e7490;box-shadow:0 0 5px rgba(103,232,249,.6)}
+.cc-dot.none{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.cc-dots-lbl{font-size:9.5px;color:#1e3a56;margin-top:4px}
+
+/* Jahrgangs-badge display */
+.jahrgangsbadge-showcase{
+  background:linear-gradient(145deg,rgba(9,18,34,.98),rgba(14,28,52,.95));
+  border:1.5px solid rgba(245,158,11,.25);
+  border-radius:14px;padding:22px 24px;margin-bottom:24px;
+  display:flex;align-items:center;gap:20px;
+}
+.jb-svg{flex-shrink:0}
+.jb-info .jb-title{font-size:15px;font-weight:700;color:#fcd34d;margin-bottom:4px}
+.jb-info .jb-sub{font-size:11.5px;color:#3a5a74;line-height:1.6}
+.jb-info .jb-chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.jb-chip{font-size:10px;font-weight:600;padding:3px 10px;border-radius:8px;border:1px solid}
+.jb-chip.basislehrjahr{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.07)}
+.jb-chip.upgraded{color:#fcd34d;border-color:rgba(252,211,77,.35);background:rgba(252,211,77,.08)}
+.jb-chip.mediamatik{color:#f472b6;border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.07)}
+
+/* Gesamtfortschritt BIT */
+.bit-total{
+  background:linear-gradient(135deg,rgba(6,13,24,.97),rgba(10,20,38,.95));
+  border:1.5px solid rgba(56,189,248,.15);
+  border-radius:14px;padding:22px 24px;margin-bottom:24px;
+}
+.bt-title{font-size:13px;font-weight:700;color:#7dd3fc;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bt-rows{display:flex;flex-direction:column;gap:10px}
+.bt-row{display:flex;align-items:center;gap:12px}
+.bt-lbl{font-size:11px;font-weight:600;min-width:130px}
+.bt-track{flex:1;height:8px;background:rgba(255,255,255,.05);border-radius:5px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.bt-fill{height:100%;border-radius:5px}
+.bt-val{font-size:11px;font-weight:700;min-width:36px;text-align:right}
+.bt-n{font-size:10px;color:#2a4a62;min-width:50px}
+
+/* Milestone kooperativ */
+.milestone-banner{
+  background:linear-gradient(135deg,rgba(14,20,8,.95),rgba(8,28,12,.9));
+  border:1.5px solid rgba(74,222,128,.2);border-radius:12px;
+  padding:16px 18px;margin-bottom:16px;
+  display:flex;align-items:center;gap:14px;
+}
+.mb-icon{font-size:26px;flex-shrink:0}
+.mb-text .mb-title{font-size:12.5px;font-weight:700;color:#4ade80}
+.mb-text .mb-sub{font-size:11px;color:#2a5a30;margin-top:2px}
+.mb-prog{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mb-track{flex:1;height:5px;background:rgba(74,222,128,.08);border-radius:4px;overflow:hidden}
+.mb-fill{height:100%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:4px;box-shadow:0 0 8px rgba(74,222,128,.5)}
+.mb-val{font-size:10px;color:#4ade80;font-weight:700}
+
+/* ── PAGE 3: NUDGES ── */
+.nudge-layout{display:grid;grid-template-columns:1fr 340px;gap:20px}
+@media(max-width:900px){.nudge-layout{grid-template-columns:1fr}}
+
+/* Aktive Nudges */
+.nudge-list{display:flex;flex-direction:column;gap:10px}
+.nudge-item{
+  background:linear-gradient(145deg,rgba(9,18,34,.95),rgba(14,26,48,.9));
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:border-color .2s;
+}
+.nudge-item:hover{border-color:rgba(56,189,248,.2)}
+.nudge-item.prio-high{border-left:3px solid #f87171}
+.nudge-item.prio-med{border-left:3px solid #f59e0b}
+.nudge-item.prio-low{border-left:3px solid #38bdf8}
+.ni-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.ni-body{flex:1}
+.ni-title{font-size:12.5px;font-weight:700;color:#c9d8e8;margin-bottom:3px}
+.ni-desc{font-size:11px;color:#4a7a9a;line-height:1.5}
+.ni-meta{font-size:10px;color:#1e3a56;margin-top:5px;display:flex;gap:8px;flex-wrap:wrap}
+.ni-chip{padding:1px 7px;border-radius:8px;border:1px solid;font-weight:600}
+.ni-chip.hk{color:#38bdf8;border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.07)}
+.ni-chip.feedback{color:#a78bfa;border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.07)}
+.ni-chip.peer{color:#4ade80;border-color:rgba(74,222,128,.25);background:rgba(74,222,128,.07)}
+.ni-chip.jahrgang{color:#fcd34d;border-color:rgba(252,211,77,.25);background:rgba(252,211,77,.07)}
+.ni-dismiss{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#3a5a74;border-radius:6px;padding:3px 9px;cursor:pointer;font-size:11px;flex-shrink:0;transition:all .2s;margin-top:1px}
+.ni-dismiss:hover{background:rgba(255,255,255,.1);color:#7baec8}
+
+/* Config panel */
+.config-panel{
+  background:linear-gradient(145deg,rgba(9,18,34,.97),rgba(11,22,42,.95));
+  border:1.5px solid rgba(56,189,248,.12);
+  border-radius:14px;padding:20px;
+  height:fit-content;position:sticky;top:100px;
+}
+.cp-title{font-size:13px;font-weight:700;color:#7dd3fc;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.cp-section{margin-bottom:20px}
+.cp-sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#2a4a62;margin-bottom:10px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.toggle-row:last-child{border-bottom:none}
+.tr-lbl{font-size:11.5px;color:#7baec8}
+.tr-sub{font-size:10px;color:#2a4a62;margin-top:1px}
+/* Toggle switch */
+.toggle{position:relative;display:inline-block;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.08);border-radius:20px;transition:.3s;border:1px solid rgba(255,255,255,.1)}
+.slider:before{position:absolute;content:"";height:14px;width:14px;left:2px;bottom:2px;background:#3a5a74;border-radius:50%;transition:.3s}
+input:checked+.slider{background:rgba(56,189,248,.25);border-color:rgba(56,189,248,.4)}
+input:checked+.slider:before{transform:translateX(16px);background:#38bdf8;box-shadow:0 0 6px rgba(56,189,248,.6)}
+
+/* Frequency select */
+.freq-select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#7baec8;padding:5px 10px;border-radius:6px;font-size:11px;font-family:inherit;cursor:pointer;width:100%;margin-top:8px}
+.freq-select:focus{outline:none;border-color:rgba(56,189,248,.4)}
+
+/* Channel pills */
+.channel-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ch-pill{padding:4px 10px;border-radius:8px;font-size:10.5px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#3a5a74;transition:all .18s}
+.ch-pill.active{background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.35);color:#38bdf8}
+
+/* ── Overlays ── */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(2px)}
+#overlay.show{opacity:1;pointer-events:all}
+#modal{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-48%) scale(.97);
+  width:min(440px,92vw);background:#090f1a;border-radius:16px;
+  border:1.5px solid rgba(56,189,248,.2);box-shadow:0 20px 60px rgba(0,0,0,.8);
+  z-index:200;transition:transform .25s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0;pointer-events:none;
+}
+#modal.show{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:all}
+#modal-head{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+#modal-title{font-size:15px;font-weight:700;color:#e2f0fa}
+#modal-sub{font-size:11px;color:#3a5a74;margin-top:3px}
+#modal-body{padding:20px}
+#modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#4a6580;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px;transition:all .2s}
+#modal-close:hover{color:#94a3b8;background:rgba(255,255,255,.12)}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(72px);background:linear-gradient(135deg,#0a1e35,#0f2a4a);color:#7dd3fc;padding:11px 24px;border-radius:10px;font-size:12.5px;font-weight:700;transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:300;pointer-events:none;white-space:nowrap;border:1px solid rgba(56,189,248,.25);box-shadow:0 6px 28px rgba(0,0,0,.6),0 0 18px rgba(56,189,248,.12);letter-spacing:.02em}
+#toast.show{transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
-  <header>
+
+<div id="hdr">
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="../index.html" class="back-link">&#8592; Zurück zur Übersicht</a>
     <div>
-      <h1>Benachrichtigungen &amp; Sozialer Vergleich</h1>
-      <div class="sub">Modul 4 – Prototyp (in Arbeit)</div>
+      <h1>🤝 Benachrichtigungen &amp; sozialer Vergleich</h1>
+      <div class="sub">Modul 4 · BIT Nachwuchsförderung · Mia Keller · Informatikerin EFZ APP · 2. Lehrjahr</div>
     </div>
-    <a href="../index.html" class="back-link">&#8592; Übersicht</a>
-  </header>
-  <div class="placeholder">
-    <div class="icon">&#128276;</div>
-    <div class="badge">Modul 4 – In Arbeit</div>
-    <h2>Benachrichtigungen &amp; Sozialer Vergleich</h2>
-    <p>Dieser Prototyp befindet sich noch in der Entwicklung. Hier werden Push-Benachrichtigungen, Erinnerungen und anonymisierte Leistungsvergleiche innerhalb der Klasse implementiert.</p>
   </div>
+  <div style="display:flex;gap:12px">
+    <div class="hdr-stat"><span class="num">2</span><span class="lbl">Peer-Badges<br>zu vergeben</span></div>
+    <div class="hdr-stat"><span class="num" id="hdr-nudge">4</span><span class="lbl">Aktive<br>Nudges</span></div>
+  </div>
+</div>
+
+<div id="tabs">
+  <div class="tab active" onclick="setTab(this,'peer')">🎖 Peer-Badges</div>
+  <div class="tab" onclick="setTab(this,'cohort')">👥 Jahrgangsübersicht</div>
+  <div class="tab" onclick="setTab(this,'nudges')">🔔 Nudges &amp; Erinnerungen</div>
+</div>
+
+<div id="main">
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 1: PEER BADGES -->
+<div class="page active" id="page-peer">
+
+  <div class="sec"><span class="sec-t">Dein Kontingent</span><div class="sec-l"></div><span class="sec-s">Frühlingssemester 2025 · saisonal limitiert</span></div>
+
+  <div class="peer-layout">
+    <!-- Left: Vergabe -->
+    <div class="kontingent-card">
+      <div>
+        <div class="kontingent-title">Badge vergeben</div>
+        <div class="kontingent-sub">Du hast noch <strong style="color:#67e8f9">2 von 3</strong> Badges zu vergeben dieses Semester. Vergabedaten bleiben anonym.</div>
+      </div>
+      <div class="kontingent-pips">
+        <div class="kpip used">✓</div>
+        <div class="kpip avail" onclick="openModal()">🎖</div>
+        <div class="kpip avail" onclick="openModal()">🎖</div>
+      </div>
+      <div class="vergabe-form">
+        <div>
+          <div class="vf-label">Empfänger (anonym für alle)</div>
+          <select class="vf-select" id="sel-person">
+            <option value="">— Person auswählen —</option>
+            <option>Lernende/r A (APP 2. Lehrjahr)</option>
+            <option>Lernende/r B (APP 2. Lehrjahr)</option>
+            <option>Lernende/r C (PLT 2. Lehrjahr)</option>
+            <option>Lernende/r D (MED 2. Lehrjahr)</option>
+          </select>
+        </div>
+        <div>
+          <div class="vf-label">Badge wählen</div>
+          <div class="badge-emoji-grid" id="badge-picker">
+            <div class="be sel" data-val="🚀"><div class="icon">🚀</div><div class="name">Antrieb</div></div>
+            <div class="be" data-val="💡"><div class="icon">💡</div><div class="name">Idee</div></div>
+            <div class="be" data-val="🤝"><div class="icon">🤝</div><div class="name">Teamwork</div></div>
+            <div class="be" data-val="🧩"><div class="icon">🧩</div><div class="name">Lösung</div></div>
+            <div class="be" data-val="⚡"><div class="icon">⚡</div><div class="name">Schnell</div></div>
+            <div class="be" data-val="🎯"><div class="icon">🎯</div><div class="name">Fokus</div></div>
+            <div class="be" data-val="🌱"><div class="icon">🌱</div><div class="name">Wachstum</div></div>
+            <div class="be" data-val="🔥"><div class="icon">🔥</div><div class="name">Einsatz</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="vf-label">Optionale Begründung (anonym)</div>
+          <textarea class="vf-textarea" id="vf-reason" placeholder="z.B. «Hat mir bei einem schwierigen Problem sehr geholfen»"></textarea>
+        </div>
+        <button class="vf-btn" onclick="sendBadge()">Badge anonym vergeben →</button>
+      </div>
+    </div>
+
+    <!-- Right: Received -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:#c9d8e8;margin-bottom:4px">Erhaltene Badges</div>
+      <div style="font-size:11px;color:#3a5a74;margin-bottom:16px">Von Mitlernenden, Praxisbildnern und Mitarbeitenden vergeben · Absender anonym</div>
+      <div class="received-grid">
+        <div class="rb-card new-badge">
+          <div class="rb-icon">🚀</div>
+          <div class="rb-name">Antrieb</div>
+          <div class="rb-count">3× erhalten</div>
+          <div class="rb-season">FS 2025</div>
+          <div class="rb-new-chip">Neu ✨</div>
+        </div>
+        <div class="rb-card">
+          <div class="rb-icon">🤝</div>
+          <div class="rb-name">Teamwork</div>
+          <div class="rb-count">2× erhalten</div>
+          <div class="rb-season">FS 2025</div>
+        </div>
+        <div class="rb-card">
+          <div class="rb-icon">💡</div>
+          <div class="rb-name">Idee</div>
+          <div class="rb-count">1× erhalten</div>
+          <div class="rb-season">HS 2024</div>
+        </div>
+        <div class="rb-card">
+          <div class="rb-icon">🎯</div>
+          <div class="rb-name">Fokus</div>
+          <div class="rb-count">2× erhalten</div>
+          <div class="rb-season">HS 2024</div>
+        </div>
+        <div class="rb-card">
+          <div class="rb-icon">🌱</div>
+          <div class="rb-name">Wachstum</div>
+          <div class="rb-count">1× erhalten</div>
+          <div class="rb-season">HS 2024</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2a4a62;margin-bottom:8px">Badge-Sets</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="font-size:10px;padding:3px 10px;border-radius:8px;background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:#f472b6">🎨 FS 2025 – «Circuit» · von Mediamatik</span>
+          <span style="font-size:10px;padding:3px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#3a5a74">HS 2024 – «Orbit» · archiviert</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jahrgangsbadge -->
+  <div class="sec" style="margin-top:32px"><span class="sec-t">Jahrgangsbadge</span><div class="sec-l"></div><span class="sec-s">Einmalig · von Mediamatik gestaltet</span></div>
+
+  <div class="jahrgangsbadge-showcase">
+    <div class="jb-svg">
+      <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="jbg" cx="50%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#1a0f00"/>
+            <stop offset="100%" stop-color="#08050a"/>
+          </radialGradient>
+          <filter id="jbsh"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="rgba(252,211,77,.8)"/></filter>
+        </defs>
+        <circle cx="36" cy="36" r="34" fill="url(#jbg)" stroke="#92400e" stroke-width="1.5"/>
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#78350f" stroke-width=".8" stroke-dasharray="4 3" opacity=".5"/>
+        <!-- Phoenix wings suggestion -->
+        <path d="M12 38 q6-14 24-14 q18 0 24 14" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+        <path d="M18 42 q5-10 18-10 q13 0 18 10" fill="none" stroke="#fcd34d" stroke-width="1" opacity=".4"/>
+        <!-- Central flame -->
+        <path d="M36 20 q4 6 2 12 q4-4 3-10 q5 8 1 16 q5-2 4-10 q6 10-2 18 q-8 4-16 0 q-8-8-2-18 q-1 8 4 10 q-4-8 1-16 q-1 6 3 10 q-2-6 2-12z" fill="#f59e0b" opacity=".85" filter="url(#jbsh)"/>
+        <text x="36" y="60" text-anchor="middle" fill="#fcd34d" font-size="7" font-weight="700" font-family="Inter,sans-serif" letter-spacing="1">JAHRGANG 2024</text>
+      </svg>
+    </div>
+    <div class="jb-info">
+      <div class="jb-title">«Phoenix» – Jahrgang 2024</div>
+      <div class="jb-sub">Gestaltet von den Mediamatik-Lernenden des Jahrgangs 2024. Vergeben nach Abschluss des Basislehrjahres und Onboarding im BIT. Nach erfolgreichem EFZ-Abschluss wird der Badge zu «Phoenix Gold» aufgewertet.</div>
+      <div class="jb-chips">
+        <span class="jb-chip basislehrjahr">✓ Basislehrjahr</span>
+        <span class="jb-chip mediamatik">🎨 Design: Mediamatik 2024</span>
+        <span class="jb-chip upgraded">⬆ EFZ-Upgrade geplant</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 2: JAHRGANG -->
+<div class="page" id="page-cohort">
+
+  <!-- Gesamtfortschritt BIT -->
+  <div class="sec"><span class="sec-t">BIT Nachwuchsförderung – Gesamtübersicht</span><div class="sec-l"></div><span class="sec-s">Alle Lehrberufe · kooperativer Fortschritt</span></div>
+
+  <div class="bit-total">
+    <div class="bt-title">📊 Lehrberuf-Fortschritt (HKs abgeschlossen, aggregiert)</div>
+    <div class="bt-rows">
+      <div class="bt-row">
+        <span class="bt-lbl lb-app">Applikationsentw.</span>
+        <div class="bt-track"><div class="bt-fill lb-app-fill" style="width:52%"></div></div>
+        <span class="bt-val lb-app">52%</span>
+        <span class="bt-n">12 Lernende</span>
+      </div>
+      <div class="bt-row">
+        <span class="bt-lbl lb-plt">Plattformentw.</span>
+        <div class="bt-track"><div class="bt-fill lb-plt-fill" style="width:48%"></div></div>
+        <span class="bt-val lb-plt">48%</span>
+        <span class="bt-n">8 Lernende</span>
+      </div>
+      <div class="bt-row">
+        <span class="bt-lbl lb-med">Mediamatik</span>
+        <div class="bt-track"><div class="bt-fill lb-med-fill" style="width:61%"></div></div>
+        <span class="bt-val lb-med">61%</span>
+        <span class="bt-n">6 Lernende</span>
+      </div>
+      <div class="bt-row">
+        <span class="bt-lbl lb-ddb">Digitales Business</span>
+        <div class="bt-track"><div class="bt-fill lb-ddb-fill" style="width:44%"></div></div>
+        <span class="bt-val lb-ddb">44%</span>
+        <span class="bt-n">5 Lernende</span>
+      </div>
+      <div class="bt-row">
+        <span class="bt-lbl lb-pbs">PiBS</span>
+        <div class="bt-track"><div class="bt-fill lb-pbs-fill" style="width:38%"></div></div>
+        <span class="bt-val lb-pbs">38%</span>
+        <span class="bt-n">4 Lernende</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kooperativer Meilenstein -->
+  <div class="milestone-banner">
+    <div class="mb-icon">🏁</div>
+    <div class="mb-text">
+      <div class="mb-title">Nächster Jahrgangs-Meilenstein: 60% aller HKs</div>
+      <div class="mb-sub">Wenn der gesamte Jahrgang 2024 zusammen 60% erreicht, erhält die Gruppe den «Momentum»-Badge.</div>
+      <div class="mb-prog">
+        <div class="mb-track"><div class="mb-fill" style="width:87%"></div></div>
+        <span class="mb-val">52% / 60%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jahrgänge -->
+  <div class="sec"><span class="sec-t">Jahrgänge</span><div class="sec-l"></div><span class="sec-s">Alle Lehrberufe · anonymisiert</span></div>
+
+  <div class="cohort-grid" id="cohort-grid"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PAGE 3: NUDGES -->
+<div class="page" id="page-nudges">
+  <div class="nudge-layout">
+
+    <!-- Left: Aktive Nudges -->
+    <div>
+      <div class="sec"><span class="sec-t">Aktive Nudges</span><div class="sec-l"></div><span class="sec-s" id="nudge-count-lbl">4 Hinweise</span></div>
+      <div class="nudge-list" id="nudge-list"></div>
+    </div>
+
+    <!-- Right: Konfiguration -->
+    <div class="config-panel">
+      <div class="cp-title">⚙️ Konfiguration</div>
+
+      <div class="cp-section">
+        <div class="cp-sec-lbl">Nudge-Typen</div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">HK-Erinnerung</div><div class="tr-sub">Keine neue HK seit X Tagen</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="updateToggle()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Feedback-Erinnerung</div><div class="tr-sub">Kein Feedback seit X Tagen</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="updateToggle()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Peer-Badge Kontingent</div><div class="tr-sub">Ungenutzte Badges im Semester</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="updateToggle()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Jahrgangs-Meilenstein</div><div class="tr-sub">Gruppe fast am Ziel</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="updateToggle()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Bildungsbericht</div><div class="tr-sub">Gespräch steht an</div></div>
+          <label class="toggle"><input type="checkbox" onchange="updateToggle()"><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <div class="cp-section">
+        <div class="cp-sec-lbl">Häufigkeit</div>
+        <select class="freq-select">
+          <option>Maximal 1× pro Tag</option>
+          <option selected>Maximal 1× pro Woche</option>
+          <option>Maximal 2× pro Monat</option>
+          <option>Nur bei hoher Priorität</option>
+        </select>
+      </div>
+
+      <div class="cp-section">
+        <div class="cp-sec-lbl">Kanal</div>
+        <div class="channel-pills">
+          <div class="ch-pill active" onclick="this.classList.toggle('active')">📱 In-App</div>
+          <div class="ch-pill active" onclick="this.classList.toggle('active')">📧 E-Mail</div>
+          <div class="ch-pill" onclick="this.classList.toggle('active')">💬 Teams</div>
+        </div>
+      </div>
+
+      <div class="cp-section" style="margin-bottom:0">
+        <div class="cp-sec-lbl">Stille Zeiten</div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Wochenende</div><div class="tr-sub">Sa–So keine Nudges</div></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-lbl">Ferien-Modus</div><div class="tr-sub">Alle Nudges pausieren</div></div>
+          <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- Vergabe Modal -->
+<div id="overlay" onclick="closeModal()"></div>
+<div id="modal">
+  <button id="modal-close" onclick="closeModal()">✕</button>
+  <div id="modal-head">
+    <div id="modal-title">Badge vergeben</div>
+    <div id="modal-sub">Deine Vergabe bleibt für alle anonym</div>
+  </div>
+  <div id="modal-body">
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:48px;margin-bottom:12px" id="modal-icon">🚀</div>
+      <div style="font-size:14px;font-weight:700;color:#e2f0fa" id="modal-badge-name">Antrieb</div>
+      <div style="font-size:11px;color:#3a5a74;margin-top:4px">Wird anonym übermittelt – niemand ausser der Empfängerin / dem Empfänger sieht dies</div>
+    </div>
+    <button class="vf-btn" style="width:100%;margin-top:8px" onclick="confirmBadge()">✓ Jetzt vergeben</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── Tab ───────────────────────────────────────────────────────────────
+function setTab(el, tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+}
+
+// ── Badge picker ──────────────────────────────────────────────────────
+document.querySelectorAll('.be').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.be').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+  });
+});
+
+// ── Modal ─────────────────────────────────────────────────────────────
+function openModal(){
+  const sel = document.querySelector('.be.sel');
+  document.getElementById('modal-icon').textContent = sel?.querySelector('.icon').textContent || '🎖';
+  document.getElementById('modal-badge-name').textContent = sel?.querySelector('.name').textContent || 'Badge';
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+function confirmBadge(){
+  closeModal();
+  showToast('🎖 Badge anonym vergeben!');
+  // Update pip
+  const pips = document.querySelectorAll('.kpip.avail');
+  if(pips.length){pips[0].classList.remove('avail');pips[0].classList.add('used');pips[0].textContent='✓'}
+}
+function sendBadge(){
+  const p = document.getElementById('sel-person').value;
+  if(!p){showToast('⚠ Bitte eine Person auswählen');return;}
+  openModal();
+}
+
+// ── Cohort grid ───────────────────────────────────────────────────────
+const COHORTS = [
+  {year:'2024',name:'Phoenix',icon:'🔥',isYou:true,
+   lehrberufe:[
+     {lb:'APP',color:'#38bdf8',pct:52,n:12},
+     {lb:'PLT',color:'#a78bfa',pct:48,n:8},
+     {lb:'MED',color:'#f472b6',pct:61,n:6},
+     {lb:'DDB',color:'#4ade80',pct:44,n:5},
+     {lb:'PiBS',color:'#fb923c',pct:38,n:4},
+   ],
+   dots:['gold','gold','silver','bronze','silver','gold','bronze','silver','none','none','bronze','gold','silver','bronze','none','none','silver','gold','none','bronze','silver','none','bronze','none','none','none','bronze','silver','none','none','gold','none','bronze','silver','none'],
+  },
+  {year:'2023',name:'Orbit',icon:'🪐',isYou:false,
+   lehrberufe:[
+     {lb:'APP',color:'#38bdf8',pct:78,n:11},
+     {lb:'PLT',color:'#a78bfa',pct:72,n:7},
+     {lb:'MED',color:'#f472b6',pct:84,n:5},
+     {lb:'DDB',color:'#4ade80',pct:69,n:4},
+     {lb:'PiBS',color:'#fb923c',pct:65,n:3},
+   ],
+   dots:['platinum','gold','gold','silver','platinum','gold','silver','gold','platinum','gold','silver','platinum','gold','silver','gold','platinum','silver','gold','silver','platinum','gold','silver','gold','platinum','silver','gold','silver','platinum','gold','silver'],
+  },
+  {year:'2022',name:'Nova',icon:'⭐',isYou:false,
+   lehrberufe:[
+     {lb:'APP',color:'#38bdf8',pct:95,n:10},
+     {lb:'PLT',color:'#a78bfa',pct:91,n:6},
+     {lb:'MED',color:'#f472b6',pct:98,n:5},
+     {lb:'DDB',color:'#4ade80',pct:88,n:4},
+     {lb:'PiBS',color:'#fb923c',pct:93,n:4},
+   ],
+   dots:['diamond','platinum','diamond','platinum','diamond','diamond','platinum','diamond','platinum','diamond','diamond','platinum','diamond','platinum','diamond','diamond','platinum','diamond','platinum','diamond','diamond','platinum','diamond','platinum','diamond','diamond','platinum','diamond','platinum','diamond'],
+  },
+  {year:'2021',name:'Pulse',icon:'💫',isYou:false,
+   lehrberufe:[
+     {lb:'APP',color:'#38bdf8',pct:100,n:9},
+     {lb:'PLT',color:'#a78bfa',pct:100,n:6},
+     {lb:'MED',color:'#f472b6',pct:100,n:4},
+     {lb:'DDB',color:'#4ade80',pct:100,n:3},
+     {lb:'PiBS',color:'#fb923c',pct:100,n:3},
+   ],
+   dots:['diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond','diamond'],
+  }
+];
+
+const BADGE_BG = {bronze:'rgba(205,127,50,.12)',silver:'rgba(173,181,189,.08)',gold:'rgba(255,215,0,.1)',platinum:'rgba(103,232,249,.1)',diamond:'rgba(192,132,252,.1)',none:'rgba(255,255,255,.03)'};
+const BADGE_BORDER = {bronze:'rgba(205,127,50,.3)',silver:'rgba(173,181,189,.25)',gold:'rgba(255,215,0,.3)',platinum:'rgba(103,232,249,.25)',diamond:'rgba(192,132,252,.3)',none:'rgba(255,255,255,.07)'};
+const DOT_TIER = {bronze:'bronze',silver:'silver',gold:'gold',platinum:'platinum',diamond:'diamond',none:'none'};
+
+function renderCohorts(){
+  const grid = document.getElementById('cohort-grid');
+  grid.innerHTML = COHORTS.map(c=>{
+    const youChip = c.isYou ? `<span class="cc-you">Dein Jahrgang</span>` : '';
+    const rows = c.lehrberufe.map(lb=>`
+      <div class="cc-prog-row">
+        <span class="cc-prog-lbl" style="color:${lb.color}">${lb.lb}</span>
+        <div class="cc-prog-track"><div class="cc-prog-fill" style="width:${lb.pct}%;background:${lb.color};box-shadow:0 0 6px ${lb.color}55"></div></div>
+        <span class="cc-prog-val" style="color:${lb.color}">${lb.pct}%</span>
+      </div>`).join('');
+    const dots = c.dots.slice(0,35).map(d=>`<div class="cc-dot ${d}" title="${d}"></div>`).join('');
+    return `<div class="cohort-card ${c.isYou?'highlight':''}">
+      <div class="cc-top">
+        <div class="cc-badge" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.06)">${c.icon}</div>
+        <div class="cc-info">
+          <div class="cc-name">Jahrgang ${c.year} «${c.name}»${youChip}</div>
+          <div class="cc-meta">${c.lehrberufe.reduce((s,l)=>s+l.n,0)} Lernende · 4 Lehrberufe + PiBS</div>
+        </div>
+      </div>
+      <div class="cc-prog">${rows}</div>
+      <div class="cc-dots">${dots}</div>
+      <div class="cc-dots-lbl">● HK-Tier pro Lernende/r (anonymisiert)</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Nudges ────────────────────────────────────────────────────────────
+const NUDGES = [
+  {id:1, prio:'high', icon:'⏰', title:'Keine neue HK seit 18 Tagen',
+   desc:'Du hast zuletzt am 17.04.2025 eine Handlungskompetenz abgeschlossen. Ein guter Zeitpunkt, die nächste anzugehen.',
+   chips:['hk'], action:'HK öffnen'},
+  {id:2, prio:'med', icon:'💬', title:'Feedback-Gespräch: 22 Tage ohne Rückmeldung',
+   desc:'Dein Praxisbildner hat seit dem 13.04.2025 kein Feedback eingetragen. Soll eine Erinnerung an ihn gesendet werden?',
+   chips:['feedback'], action:'Erinnerung senden'},
+  {id:3, prio:'low', icon:'🎖', title:'Du hast noch 2 Peer-Badges zu vergeben',
+   desc:'Das Frühlingssemester 2025 läuft noch bis Ende Juni. Ungenutzte Badges verfallen am 30.06.2025.',
+   chips:['peer'], action:'Badge vergeben'},
+  {id:4, prio:'low', icon:'🏁', title:'Jahrgang fast am nächsten Meilenstein',
+   desc:'Noch 8% fehlen zum gemeinsamen «Momentum»-Badge. 3 weitere HKs in deinem Jahrgang würden reichen.',
+   chips:['jahrgang'], action:'Jahrgang ansehen'},
+];
+
+let activeNudges = [...NUDGES];
+
+function renderNudges(){
+  const list = document.getElementById('nudge-list');
+  if(!activeNudges.length){
+    list.innerHTML=`<div style="text-align:center;padding:40px;color:#1e3a56;font-size:12px">Keine aktiven Nudges ✓</div>`;
+    return;
+  }
+  list.innerHTML = activeNudges.map(n=>`
+    <div class="nudge-item prio-${n.prio}" id="nudge-${n.id}">
+      <div class="ni-icon">${n.icon}</div>
+      <div class="ni-body">
+        <div class="ni-title">${n.title}</div>
+        <div class="ni-desc">${n.desc}</div>
+        <div class="ni-meta">
+          ${n.chips.map(c=>`<span class="ni-chip ${c}">${c.toUpperCase()}</span>`).join('')}
+          <span style="color:#1e3a56">Priorität: ${{high:'Hoch',med:'Mittel',low:'Niedrig'}[n.prio]}</span>
+        </div>
+      </div>
+      <button class="ni-dismiss" onclick="dismissNudge(${n.id})">Erledigt</button>
+    </div>`).join('');
+  document.getElementById('nudge-count-lbl').textContent = activeNudges.length+' Hinweise';
+  document.getElementById('hdr-nudge').textContent = activeNudges.length;
+}
+
+function dismissNudge(id){
+  activeNudges = activeNudges.filter(n=>n.id!==id);
+  renderNudges();
+  showToast('✓ Nudge als erledigt markiert');
+}
+
+function updateToggle(){
+  // In a real app this would filter nudges
+  setTimeout(()=>showToast('⚙ Einstellungen gespeichert'),100);
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+renderCohorts();
+renderNudges();
+</script>
 </body>
 </html>
