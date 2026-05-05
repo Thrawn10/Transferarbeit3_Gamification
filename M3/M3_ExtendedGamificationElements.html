@@ -1,95 +1,510 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erweiterte Gamification-Elemente – Prototyp M3</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: #0b1520;
-      color: #c9d8e8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(251,146,60,.07) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(56,189,248,.05) 0%, transparent 60%),
-        radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: auto, auto, 28px 28px;
-    }
-    header {
-      background: linear-gradient(135deg, #060d18 0%, #0d1b2a 60%, #111827 100%);
-      padding: 14px 24px;
-      border-bottom: 1px solid rgba(251,146,60,.15);
-      box-shadow: 0 2px 24px rgba(0,0,0,.7);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 { font-size: 16px; font-weight: 700; color: #e2f0fa; }
-    header .sub { font-size: 11px; opacity: .5; margin-top: 2px; color: #c9a07a; }
-    .back-link {
-      font-size: 12px;
-      color: #fb923c;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid rgba(251,146,60,.25);
-      border-radius: 8px;
-      background: rgba(251,146,60,.07);
-      transition: background .2s;
-    }
-    .back-link:hover { background: rgba(251,146,60,.14); }
-    .placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 48px 24px;
-      text-align: center;
-    }
-    .icon { font-size: 56px; opacity: .3; }
-    .placeholder h2 { font-size: 22px; font-weight: 700; color: #fb923c; }
-    .placeholder p {
-      font-size: 13px;
-      color: #7baec8;
-      max-width: 400px;
-      line-height: 1.65;
-    }
-    .badge {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: rgba(251,146,60,.12);
-      color: #fb923c;
-      border: 1px solid rgba(251,146,60,.25);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modul 3 – Badges & Auszeichnungen | BIT Nachwuchsförderung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter','Segoe UI',system-ui,sans-serif;
+  background:#0b1520;color:#c9d8e8;
+  overflow-x:hidden;min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(56,189,248,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(168,85,247,.05) 0%, transparent 60%),
+    radial-gradient(circle, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:auto, auto, 28px 28px;
+}
+#hdr{
+  background:linear-gradient(135deg,#060d18 0%,#0d1b2a 60%,#111827 100%);
+  color:#fff;padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 24px rgba(0,0,0,.7),0 1px 0 rgba(56,189,248,.12);
+  border-bottom:1px solid rgba(56,189,248,.15);
+}
+#hdr h1{font-size:16px;font-weight:700;color:#e2f0fa;letter-spacing:.01em}
+#hdr .sub{font-size:11px;opacity:.5;margin-top:2px;color:#7baec8;letter-spacing:.02em}
+#hdr-right{display:flex;gap:12px}
+.hdr-stat{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:7px 14px}
+.back-link{font-size:12px;color:#38bdf8;text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(56,189,248,.22);border-radius:8px;background:rgba(56,189,248,.06);transition:background .2s,border-color .2s;flex-shrink:0;white-space:nowrap}
+.back-link:hover{background:rgba(56,189,248,.13);border-color:rgba(56,189,248,.42)}
+.hdr-stat .num{font-size:18px;font-weight:700;color:#67e8f9}
+.hdr-stat .lbl{font-size:10px;color:#4a7a9a;line-height:1.3}
+#tabs{display:flex;padding:0 24px;background:rgba(6,13,24,.8);border-bottom:1px solid rgba(56,189,248,.1);backdrop-filter:blur(8px);position:sticky;top:53px;z-index:90}
+.tab{padding:11px 20px;font-size:12px;font-weight:600;color:#3a5a74;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;letter-spacing:.03em;display:flex;align-items:center;gap:6px}
+.tab:hover{color:#7baec8}
+.tab.active{color:#38bdf8;border-bottom-color:#38bdf8}
+.tab .ct{background:rgba(56,189,248,.12);color:#38bdf8;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700}
+.tab.active .ct{background:rgba(56,189,248,.22)}
+#main{padding:28px 28px 60px;max-width:1100px;margin:0 auto}
+
+
+/* Legends */
+#area-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.al{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;border:1px solid;font-size:10.5px;font-weight:600}
+.al.A{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.06)}
+.al.B{color:#06b6d4;border-color:rgba(6,182,212,.25);background:rgba(6,182,212,.06)}
+.al.C{color:#f87171;border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.06)}
+.al.G{color:#c084fc;border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.06)}
+.al.H{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.06)}
+.al span{opacity:.6;font-size:9.5px}
+#tier-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;padding:13px 18px;background:rgba(9,18,34,.6);border:1px solid rgba(56,189,248,.1);border-radius:10px}
+.tl{display:flex;align-items:center;gap:7px;font-size:10.5px}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tl-dot.b1{background:#cd7f32;box-shadow:0 0 5px rgba(205,127,50,.5)}
+.tl-dot.b2{background:#d1d5db;box-shadow:0 0 4px rgba(209,213,219,.4)}
+.tl-dot.b3{background:#ffd700;box-shadow:0 0 6px rgba(255,215,0,.6)}
+.tl-dot.b4{background:#67e8f9;box-shadow:0 0 5px rgba(103,232,249,.5)}
+.tl-dot.b5{background:#c084fc;box-shadow:0 0 7px rgba(192,132,252,.6)}
+.tl-lbl{color:#4a7a9a;font-weight:600}
+.tl-req{color:#1e3a56;font-size:9.5px}
+
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:36px}
+.sec-header:first-of-type{margin-top:0}
+.sec-title{font-size:12px;font-weight:700;color:#4a7a9a;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(56,189,248,.2),transparent)}
+.sec-sub{font-size:11px;color:#1e3a56;white-space:nowrap}
+
+/* Badge grid */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px;margin-bottom:8px}
+.badge-card{background:linear-gradient(145deg,rgba(9,18,34,.95),rgba(14,26,48,.9));border:1.5px solid rgba(255,255,255,.07);border-radius:14px;padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s;overflow:hidden}
+.badge-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+.badge-card.earned{cursor:pointer}
+.badge-card.earned:hover{transform:translateY(-4px) scale(1.02)}
+.badge-card.t-bronze.earned{border-color:rgba(205,127,50,.45);box-shadow:0 0 18px rgba(205,127,50,.12)}
+.badge-card.t-bronze.earned:hover{box-shadow:0 8px 28px rgba(205,127,50,.32)}
+.badge-card.t-silver.earned{border-color:rgba(173,181,189,.4);box-shadow:0 0 18px rgba(173,181,189,.1)}
+.badge-card.t-silver.earned:hover{box-shadow:0 8px 28px rgba(173,181,189,.28)}
+.badge-card.t-gold.earned{border-color:rgba(255,215,0,.45);box-shadow:0 0 20px rgba(255,215,0,.16);animation:goldGlow 3.5s ease-in-out infinite}
+.badge-card.t-gold.earned:hover{box-shadow:0 8px 32px rgba(255,215,0,.42)}
+.badge-card.t-platinum.earned{border-color:rgba(103,232,249,.45);box-shadow:0 0 22px rgba(103,232,249,.15);animation:platGlow 4s ease-in-out infinite}
+.badge-card.t-platinum.earned:hover{box-shadow:0 8px 32px rgba(103,232,249,.38)}
+.badge-card.t-diamond.earned{border-color:rgba(192,132,252,.5);box-shadow:0 0 26px rgba(192,132,252,.2);animation:diamondGlow 3s ease-in-out infinite}
+.badge-card.t-diamond.earned:hover{box-shadow:0 8px 36px rgba(192,132,252,.48)}
+.badge-card.t-milestone.earned{border-color:rgba(245,158,11,.45);box-shadow:0 0 24px rgba(245,158,11,.18);animation:msPulse 3s ease-in-out infinite}
+.badge-card.t-milestone.earned:hover{box-shadow:0 8px 36px rgba(245,158,11,.45)}
+.badge-card.locked{opacity:.38;filter:saturate(.1) brightness(.5)}
+@keyframes goldGlow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.16)}50%{box-shadow:0 0 32px rgba(255,215,0,.36)}}
+@keyframes platGlow{0%,100%{box-shadow:0 0 22px rgba(103,232,249,.15)}50%{box-shadow:0 0 36px rgba(103,232,249,.35)}}
+@keyframes diamondGlow{0%,100%{box-shadow:0 0 26px rgba(192,132,252,.2)}50%{box-shadow:0 0 42px rgba(192,132,252,.44)}}
+@keyframes msPulse{0%,100%{box-shadow:0 0 24px rgba(245,158,11,.18),inset 0 0 16px rgba(245,158,11,.04)}50%{box-shadow:0 0 38px rgba(245,158,11,.4),inset 0 0 24px rgba(245,158,11,.08)}}
+
+.badge-svg-wrap{width:90px;height:90px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative}
+.badge-svg-wrap svg{width:100%;height:100%;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));transition:filter .2s}
+.badge-card.earned:hover .badge-svg-wrap svg{filter:drop-shadow(0 4px 14px rgba(0,0,0,.4)) brightness(1.12)}
+.badge-card.locked .badge-svg-wrap svg{filter:grayscale(1) brightness(.4)}
+.lock-pip{position:absolute;bottom:-2px;right:-2px;background:rgba(9,18,34,.92);border:1px solid rgba(255,255,255,.1);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px}
+
+.tier-chip{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:2px 8px;border-radius:10px;margin-bottom:8px;border:1px solid}
+.t-bronze .tier-chip{color:#cd7f32;border-color:rgba(205,127,50,.3);background:rgba(205,127,50,.07)}
+.t-silver .tier-chip{color:#adb5bd;border-color:rgba(173,181,189,.28);background:rgba(173,181,189,.06)}
+.t-gold .tier-chip{color:#ffd700;border-color:rgba(255,215,0,.32);background:rgba(255,215,0,.07)}
+.t-platinum .tier-chip{color:#67e8f9;border-color:rgba(103,232,249,.28);background:rgba(103,232,249,.06)}
+.t-diamond .tier-chip{color:#c084fc;border-color:rgba(192,132,252,.28);background:rgba(192,132,252,.06)}
+.t-milestone .tier-chip{color:#fcd34d;border-color:rgba(252,211,77,.32);background:rgba(252,211,77,.07)}
+
+.badge-name{font-size:12px;font-weight:700;color:#c9d8e8;line-height:1.3;margin-bottom:3px}
+.badge-card.locked .badge-name{color:#1e3a56}
+.badge-req{font-size:10px;color:#2e4f6a;line-height:1.4}
+.badge-date{font-size:9.5px;color:#1e6a8a;margin-top:6px;font-weight:600}
+.hk-areas{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:8px}
+.hk-pill{font-size:8.5px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:8px;border:1px solid}
+.hk-pill.A{color:#60a5fa;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.07)}
+.hk-pill.B{color:#06b6d4;border-color:rgba(6,182,212,.3);background:rgba(6,182,212,.07)}
+.hk-pill.C{color:#f87171;border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.07)}
+.hk-pill.G{color:#c084fc;border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.07)}
+.hk-pill.H{color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.07)}
+
+/* Detail panel */
+#detail{position:fixed;right:0;top:0;bottom:0;width:360px;background:#090f1a;box-shadow:-6px 0 40px rgba(0,0,0,.7);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);border-left:1px solid rgba(56,189,248,.12)}
+#detail.open{transform:translateX(0)}
+#det-head{background:linear-gradient(135deg,#0a1420,#0f1f35);padding:20px 18px 18px;flex-shrink:0;border-bottom:1px solid rgba(56,189,248,.1);position:relative}
+.d-tier{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+.d-name{font-size:15px;font-weight:700;color:#e2f0fa;line-height:1.35}
+.d-cat{font-size:11px;color:#3a5a74;margin-top:3px}
+#det-body{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:#1e3a5f transparent}
+#det-svg{display:flex;justify-content:center;margin-bottom:20px}
+#det-svg svg{width:120px;height:120px;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))}
+.d-desc{font-size:12.5px;color:#6b8499;line-height:1.7;margin-bottom:20px}
+.d-sec{font-size:10px;font-weight:700;text-transform:uppercase;color:#2a4a62;letter-spacing:.1em;margin-bottom:9px}
+.d-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.d-row:last-child{border-bottom:none}
+.d-key{font-size:11.5px;color:#3a5a74}
+.d-val{font-size:11.5px;color:#c9d8e8;font-weight:600}
+.d-hk-item{padding:7px 10px;margin-bottom:4px;background:rgba(74,222,128,.04);border-radius:7px;border:1px solid rgba(74,222,128,.1);font-size:11px;color:#6b9e80;display:flex;align-items:center;gap:8px}
+.d-hk-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+#det-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#4a6580;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px;transition:all .2s}
+#det-close:hover{background:rgba(255,255,255,.12);color:#94a3b8}
+
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:190;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(2px)}
+#overlay.show{opacity:1;pointer-events:all}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(72px);background:linear-gradient(135deg,#0a1e35,#0f2a4a);color:#7dd3fc;padding:11px 24px;border-radius:10px;font-size:12.5px;font-weight:700;transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:300;pointer-events:none;white-space:nowrap;border:1px solid rgba(56,189,248,.25);box-shadow:0 6px 28px rgba(0,0,0,.6)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Erweiterte Gamification-Elemente</h1>
-      <div class="sub">Modul 3 – Prototyp (in Arbeit)</div>
-    </div>
-    <a href="../index.html" class="back-link">&#8592; Übersicht</a>
-  </header>
-  <div class="placeholder">
-    <div class="icon">&#127942;</div>
-    <div class="badge">Modul 3 – In Arbeit</div>
-    <h2>Erweiterte Gamification-Elemente</h2>
-    <p>Dieser Prototyp befindet sich noch in der Entwicklung. Hier werden Badges, Achievements, ein XP-Levelsystem und weitere Belohnungsmechanismen zur Steigerung der Lernmotivation implementiert.</p>
+
+<div id="hdr">
+  <div>
+    <h1>🏅 Badges &amp; Auszeichnungen</h1>
+    <div class="sub">Modul 3 · BIT Nachwuchsförderung · Mia Keller · Informatikerin EFZ APP · 2. Lehrjahr</div>
   </div>
+  <div id="hdr-right">
+    <a href="../index.html" class="back-link">&#8592; Zurück zur Übersicht</a>
+    <div class="hdr-stat"><span class="num" id="hdr-earned">-</span><span class="lbl">Badges erhalten</span></div>
+    <div class="hdr-stat"><span class="num" id="hdr-hk">-</span><span class="lbl">HKs abgeschlossen</span></div>
+  </div>
+</div>
+
+<div id="tabs">
+  <div class="tab active" onclick="setTab(this,'all')">Alle <span class="ct" id="ct-all">-</span></div>
+  <div class="tab" onclick="setTab(this,'hk')">HK-Fortschritt <span class="ct" id="ct-hk">-</span></div>
+  <div class="tab" onclick="setTab(this,'milestone')">Meilensteine <span class="ct" id="ct-ms">-</span></div>
+  <div class="tab" onclick="setTab(this,'locked')">Ausstehend <span class="ct" id="ct-locked">-</span></div>
+</div>
+
+<div id="main">
+
+
+  <div id="tier-legend">
+    <div class="tl"><div class="tl-dot b1"></div><span class="tl-lbl">Bronze</span><span class="tl-req">5 HKs abgeschlossen</span></div>
+    <div class="tl"><div class="tl-dot b2"></div><span class="tl-lbl">Silber</span><span class="tl-req">10 HKs</span></div>
+    <div class="tl"><div class="tl-dot b3"></div><span class="tl-lbl">Gold</span><span class="tl-req">15 HKs</span></div>
+    <div class="tl"><div class="tl-dot b4"></div><span class="tl-lbl">Platin</span><span class="tl-req">20 HKs</span></div>
+    <div class="tl"><div class="tl-dot b5"></div><span class="tl-lbl">Diamant</span><span class="tl-req">25 HKs – alle</span></div>
+  </div>
+
+  <div class="sec-header" id="sec-hk">
+    <span class="sec-title">HK-Fortschritt-Badges</span>
+    <div class="sec-line"></div>
+    <span class="sec-sub">Jede 5. abgeschlossene Handlungskompetenz – bereichsunabhängig</span>
+  </div>
+  <div class="badge-grid" id="grid-hk"></div>
+
+  <div class="sec-header" id="sec-ms">
+    <span class="sec-title">Meilenstein-Badges</span>
+    <div class="sec-line"></div>
+    <span class="sec-sub">Grosse Ausbildungsschritte</span>
+  </div>
+  <div class="badge-grid" id="grid-ms"></div>
+
+</div>
+
+<div id="overlay" onclick="closeDetail()"></div>
+<div id="detail">
+  <div id="det-head">
+    <button id="det-close" onclick="closeDetail()">✕ Schliessen</button>
+    <div class="d-tier" id="d-tier"></div>
+    <div class="d-name" id="d-name"></div>
+    <div class="d-cat" id="d-cat"></div>
+  </div>
+  <div id="det-body">
+    <div id="det-svg"></div>
+    <p class="d-desc" id="d-desc"></p>
+    <div class="d-sec">Details</div>
+    <div id="d-meta"></div>
+    <div id="d-hklist"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ── 25 HKs from Bildungsplan Informatiker/in EFZ APP 2021 ─────────────
+const ALL_HKS = [
+  {id:'a1',area:'A',name:'Bedürfnisse von Stakeholdern abklären und dokumentieren'},
+  {id:'a2',area:'A',name:'Vorgehensmodell für ein ICT-Projekt bestimmen'},
+  {id:'a3',area:'A',name:'Informationen zu ICT-Lösungen und Innovationen recherchieren'},
+  {id:'a4',area:'A',name:'ICT-Projekte und Aufgaben gemäss Vorgehensmodell planen'},
+  {id:'a5',area:'A',name:'Varianten für ICT-Lösungen visualisieren und präsentieren'},
+  {id:'a6',area:'A',name:'Fortschritt von ICT-Projekten überprüfen und rapportieren'},
+  {id:'a7',area:'A',name:'ICT-Lösungen übergeben und Projekt abschliessen'},
+  {id:'b1',area:'B',name:'Den eigenen ICT-Arbeitsplatz einrichten'},
+  {id:'b2',area:'B',name:'Komplexe ICT-Supportanfragen entgegennehmen und bearbeiten'},
+  {id:'b3',area:'B',name:'Kunden in Bezug auf Datenschutz und Datensicherheit beraten'},
+  {id:'b4',area:'B',name:'Geschäftsprozesse analysieren, visualisieren und dokumentieren'},
+  {id:'c1',area:'C',name:'Daten identifizieren, analysieren und Datenmodelle entwickeln'},
+  {id:'c2',area:'C',name:'Datenmodelle in einem digitalen Datenspeicher umsetzen'},
+  {id:'c3',area:'C',name:'Datensicherheit und Datenschutz planen, implementieren und dokumentieren'},
+  {id:'c4',area:'C',name:'Daten aus digitalen Datenspeichern aufbereiten'},
+  {id:'g1',area:'G',name:'Anforderungen an Applikationen und Schnittstellen analysieren und dokumentieren'},
+  {id:'g2',area:'G',name:'Gestaltungsentwürfe für Benutzerschnittstellen überprüfen und weiterentwickeln'},
+  {id:'g3',area:'G',name:'Sicherheit von Applikationen und Schnittstellen beurteilen und dokumentieren'},
+  {id:'g4',area:'G',name:'Umsetzungsvarianten für Applikationen entwerfen und konzeptionell ausarbeiten'},
+  {id:'g5',area:'G',name:'Applikationen und Schnittstellen gemäss Entwurf implementieren'},
+  {id:'g6',area:'G',name:'Qualität und Sicherheit von Applikationen und Schnittstellen überprüfen'},
+  {id:'h1',area:'H',name:'Geeignete Plattform für die Auslieferung von Applikationen bestimmen'},
+  {id:'h2',area:'H',name:'Auslieferungsprozess von Applikationen definieren'},
+  {id:'h3',area:'H',name:'Auslieferungsprozess von Applikationen durchführen'},
+  {id:'h4',area:'H',name:'Applikationen und Schnittstellen überwachen und Probleme im Betrieb beheben'},
+];
+
+// Demo: 13 HKs completed (Bronze + Silber + Gold earned; Platin + Diamant locked)
+const DONE = new Set(['a1','a2','a3','a4','a5','b1','b2','b3','c1','c2','g1','g2','h1']);
+const TOTAL = 25;
+const DONE_COUNT = DONE.size; // 13
+
+const AREA_COLOR = {A:'#60a5fa',B:'#06b6d4',C:'#f87171',G:'#c084fc',H:'#fb923c'};
+const TIER_NAMES = {bronze:'Bronze',silver:'Silber',gold:'Gold',platinum:'Platin',diamond:'Diamant',milestone:'Meilenstein'};
+const TIER_COLORS = {bronze:'#cd7f32',silver:'#adb5bd',gold:'#ffd700',platinum:'#67e8f9',diamond:'#c084fc',milestone:'#fcd34d'};
+
+const TIERS = [
+  {n:5, tier:'bronze'}, {n:10,tier:'silver'}, {n:15,tier:'gold'},
+  {n:20,tier:'platinum'}, {n:25,tier:'diamond'}
+];
+
+// Earned dates for demo
+const EARN_DATES = {bronze:'14.11.2024',silver:'22.01.2025',gold:'08.03.2025'};
+
+// ── SVG: HK badge ─────────────────────────────────────────────────────
+function svgHK(tier, n){
+  const C = {
+    bronze:  ['#cd7f32','#92400e','#2d1500','#160a00','#fbbf7a','BRONZE'],
+    silver:  ['#adb5bd','#6b7280','#1c2229','#0d1218','#e2e8f0','SILBER'],
+    gold:    ['#ffd700','#b45309','#2d1800','#140c00','#fef3c7','GOLD'],
+    platinum:['#67e8f9','#0e7490','#032430','#011218','#cffafe','PLATIN'],
+    diamond: ['#c084fc','#7c3aed','#160a2e','#08041a','#e9d5ff','DIAMANT'],
+  }[tier];
+  const uid = tier+n;
+  return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg${uid}" cx="50%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="${C[2]}"/><stop offset="100%" stop-color="${C[3]}"/>
+      </radialGradient>
+      <filter id="sh${uid}"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="${C[0]}" flood-opacity=".7"/></filter>
+    </defs>
+    <circle cx="45" cy="45" r="43" fill="url(#bg${uid})" stroke="${C[1]}" stroke-width="1.5"/>
+    <circle cx="45" cy="45" r="39" fill="none" stroke="${C[1]}" stroke-width=".8" stroke-dasharray="5 4" opacity=".4"/>
+    <circle cx="45" cy="45" r="33" fill="none" stroke="${C[1]}" stroke-width="5.5" opacity=".18"/>
+    <circle cx="45" cy="45" r="33" fill="none" stroke="${C[0]}" stroke-width="5" filter="url(#sh${uid})"/>
+    <text x="45" y="44" text-anchor="middle" dominant-baseline="middle" fill="${C[4]}" font-size="22" font-weight="700" font-family="Inter,sans-serif">${n}</text>
+    <text x="45" y="59" text-anchor="middle" fill="${C[0]}" font-size="9" font-weight="700" font-family="Inter,sans-serif" letter-spacing="2">HK</text>
+    <text x="45" y="76" text-anchor="middle" fill="${C[1]}" font-size="7.5" font-weight="700" font-family="Inter,sans-serif" letter-spacing="1.5">${C[5]}</text>
+  </svg>`;
+}
+
+function svgHKLocked(n){
+  return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="45" cy="45" r="43" fill="#0a1420" stroke="#1a2a3a" stroke-width="1.5"/>
+    <circle cx="45" cy="45" r="39" fill="none" stroke="#1a2a3a" stroke-width=".8" stroke-dasharray="5 4" opacity=".4"/>
+    <circle cx="45" cy="45" r="33" fill="none" stroke="#1a2a3a" stroke-width="5"/>
+    <text x="45" y="42" text-anchor="middle" fill="#1e3a56" font-size="20" font-weight="700" font-family="Inter,sans-serif">${n}</text>
+    <text x="45" y="56" text-anchor="middle" fill="#1a2a3a" font-size="9" font-weight="700" font-family="Inter,sans-serif" letter-spacing="2">HK</text>
+    <rect x="36" y="63" width="18" height="14" rx="2.5" fill="#0e1c2e" stroke="#1a2a3a" stroke-width="1.5"/>
+    <path d="M40 63 v-4.5 a5 5 0 0 1 10 0 v4.5" fill="none" stroke="#1a2a3a" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="45" cy="70" r="2" fill="#1a2a3a"/>
+  </svg>`;
+}
+
+// ── SVG: Milestone badges ──────────────────────────────────────────────
+function svgMs(type){
+  const cfgs = {
+    uek:{
+      bg1:'#1a1000',bg2:'#0d0800',ring:'#f59e0b',fill:'#78350f',glow:'rgba(245,158,11,.75)',
+      body:`<rect x="27" y="27" width="36" height="28" rx="3" fill="#1e1200" stroke="#f59e0b" stroke-width="1.5"/>
+        <line x1="45" y1="27" x2="45" y2="55" stroke="#f59e0b" stroke-width="1" opacity=".4"/>
+        <path d="M31 35 h10 M31 41 h10 M31 47 h8" stroke="#fcd34d" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M49 35 h9 M49 41 h9 M49 47 h7" stroke="#fcd34d" stroke-width="1.5" stroke-linecap="round"/>`,
+      lbl:'ÜK',sub:'ABGESCHLOSSEN'
+    },
+    bj:{
+      bg1:'#1a0f00',bg2:'#0d0800',ring:'#f59e0b',fill:'#92400e',glow:'rgba(245,158,11,.8)',
+      body:`<path d="M30 27 h30 v17 a15 15 0 0 1-30 0 z" fill="#1e1200" stroke="#f59e0b" stroke-width="1.5"/>
+        <path d="M30 29 q-7 5-7 10 q0 5 7 7" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+        <path d="M60 29 q7 5 7 10 q0 5-7 7" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="45" y="42" text-anchor="middle" fill="#fcd34d" font-size="15">★</text>
+        <path d="M35 53 h10 M39 49 v4 M47 49 v4" stroke="#fcd34d" stroke-width="2" stroke-linecap="round"/>`,
+      lbl:'BASISLEHRJAHR',sub:''
+    },
+    allhk:{
+      bg1:'#160a2e',bg2:'#09041a',ring:'#c084fc',fill:'#4c1d95',glow:'rgba(192,132,252,.9)',
+      body:`<circle cx="45" cy="40" r="16" fill="#1a0840" stroke="#c084fc" stroke-width="1.5"/>
+        <path d="M35 40 l7 7 l13-14" fill="none" stroke="#c084fc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+      lbl:'ALLE HK',sub:'ABGESCHLOSSEN'
+    },
+    ipa:{
+      bg1:'#042833',bg2:'#020f16',ring:'#38bdf8',fill:'#0e4858',glow:'rgba(56,189,248,.8)',
+      body:`<rect x="29" y="23" width="32" height="38" rx="3" fill="#031c26" stroke="#38bdf8" stroke-width="1.5"/>
+        <path d="M35 32 h20 M35 38 h20 M35 44 h13" stroke="#67e8f9" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="55" cy="55" r="9" fill="#031c26" stroke="#38bdf8" stroke-width="1.5"/>
+        <path d="M50 55 l3.5 3.5 l6-6" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`,
+      lbl:'IPA',sub:'BESTANDEN'
+    },
+    efz:{
+      bg1:'#1a0f00',bg2:'#090400',ring:'#ffd700',fill:'#92400e',glow:'rgba(255,215,0,.9)',
+      body:`<polygon points="45,17 50.5,33 68,33 54,43 59.5,59 45,49 30.5,59 36,43 22,33 39.5,33"
+          fill="#2d1800" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="45" y="45" text-anchor="middle" fill="#fef3c7" font-size="9.5" font-weight="700" font-family="Inter,sans-serif">EFZ</text>`,
+      lbl:'EFZ',sub:'FÄHIGKEITSZEUGNIS'
+    }
+  }[type];
+  const uid='ms'+type;
+  const lblSize = cfgs.lbl.length > 8 ? '7' : '8.5';
+  return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg${uid}" cx="50%" cy="30%" r="65%">
+        <stop offset="0%" stop-color="${cfgs.bg1}"/><stop offset="100%" stop-color="${cfgs.bg2}"/>
+      </radialGradient>
+      <filter id="sh${uid}"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="${cfgs.glow}"/></filter>
+    </defs>
+    <circle cx="45" cy="45" r="43" fill="url(#bg${uid})" stroke="${cfgs.fill}" stroke-width="1.5"/>
+    <circle cx="45" cy="45" r="39" fill="none" stroke="${cfgs.fill}" stroke-width=".8" stroke-dasharray="4 4" opacity=".45"/>
+    ${cfgs.body}
+    <text x="45" y="${cfgs.sub?'74':'77'}" text-anchor="middle" fill="${cfgs.ring}" font-size="${lblSize}" font-weight="700" font-family="Inter,sans-serif" letter-spacing=".8" filter="url(#sh${uid})">${cfgs.lbl}</text>
+    ${cfgs.sub?`<text x="45" y="83" text-anchor="middle" fill="${cfgs.fill}" font-size="6.5" font-weight="600" font-family="Inter,sans-serif" letter-spacing="1">${cfgs.sub}</text>`:''}
+  </svg>`;
+}
+
+function svgMsLocked(){
+  return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="45" cy="45" r="43" fill="#0a1420" stroke="#1a2a3a" stroke-width="1.5"/>
+    <circle cx="45" cy="45" r="39" fill="none" stroke="#1a2a3a" stroke-width=".8" stroke-dasharray="5 4" opacity=".4"/>
+    <rect x="30" y="43" width="30" height="23" rx="4" fill="#0e1c2e" stroke="#1a2a3a" stroke-width="1.5"/>
+    <path d="M34 43 v-8 a11 11 0 0 1 22 0 v8" fill="none" stroke="#1a2a3a" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="45" cy="54.5" r="3" fill="#1a2a3a"/>
+    <line x1="45" y1="57.5" x2="45" y2="62" stroke="#1a2a3a" stroke-width="2" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ── Build data ────────────────────────────────────────────────────────
+const doneList = [...DONE]; // ordered as inserted
+
+function buildHKBadges(){
+  return TIERS.map(({n,tier})=>{
+    const earned = DONE_COUNT >= n;
+    const areasAt = earned
+      ? [...new Set(doneList.slice(0,n).map(id=>ALL_HKS.find(h=>h.id===id)?.area).filter(Boolean))]
+      : [];
+    return {
+      id:'hk-'+tier, type:'hk', tier, n, earned,
+      areas: areasAt,
+      earnedDate: EARN_DATES[tier]||null,
+      desc: earned
+        ? `Vergeben beim Abschluss der ${n}. Handlungskompetenz – bereichsunabhängig. Du hast diesen Badge durch Fortschritte in ${areasAt.length>1?'den Bereichen':'Bereich'} ${areasAt.join(', ')} erreicht.`
+        : `Noch ${n-DONE_COUNT} weitere HKs nötig. Dieser Badge wird unabhängig vom Bereich vergeben – egal welche Handlungskompetenzen du als Nächstes abschliesst.`
+    };
+  });
+}
+
+const MS_DATA = [
+  {id:'ms-uek',  msType:'uek',   name:'Alle ÜKs abgeschlossen',      earned:true,  earnedDate:'15.02.2025', desc:'Alle überbetrieblichen Kurse (ÜKs) wurden erfolgreich absolviert.'},
+  {id:'ms-bj',   msType:'bj',    name:'Basislehrjahr bestanden',      earned:true,  earnedDate:'31.07.2024', desc:'Das Basislehrjahr wurde erfolgreich abgeschlossen. Der Grundstein deiner Ausbildung ist gelegt!'},
+  {id:'ms-allhk',msType:'allhk', name:'Alle HKs abgeschlossen',       earned:false, earnedDate:null,         desc:'Alle 25 Handlungskompetenzen aus sämtlichen Bereichen abgeschlossen.'},
+  {id:'ms-ipa',  msType:'ipa',   name:'IPA bestanden',                earned:false, earnedDate:null,         desc:'Die individuelle praktische Arbeit (IPA) wurde erfolgreich bewertet.'},
+  {id:'ms-efz',  msType:'efz',   name:'Eidg. Fähigkeitszeugnis',      earned:false, earnedDate:null,         desc:'Das eidgenössische Fähigkeitszeugnis (EFZ) als Informatikerin EFZ wurde erhalten. Herzliche Gratulation!'},
+].map(d=>({...d,type:'milestone',tier:'milestone'}));
+
+const hkBadges = buildHKBadges();
+const allBadges = [...hkBadges, ...MS_DATA];
+
+// ── Card renderer ─────────────────────────────────────────────────────
+function cardSvg(b){
+  if(b.type==='hk') return b.earned ? svgHK(b.tier,b.n) : svgHKLocked(b.n);
+  return b.earned ? svgMs(b.msType) : svgMsLocked();
+}
+
+function makeCard(b){
+  const locked=!b.earned;
+  const cls=`badge-card t-${b.tier} ${locked?'locked':'earned'}`;
+  const title = b.type==='hk' ? `${b.n} HKs` : b.name;
+  const sub   = b.type==='hk' ? `Beim Abschluss der ${b.n}. HK vergeben` : 'Meilenstein-Badge';
+  const areas = (b.areas||[]).map(a=>`<span class="hk-pill ${a}">${a}</span>`).join('');
+  const areasRow = areas ? `<div class="hk-areas">${areas}</div>` : '';
+  const dateRow  = b.earnedDate ? `<div class="badge-date">Erhalten: ${b.earnedDate}</div>` : '';
+  const lockPip  = locked ? `<div class="lock-pip">🔒</div>` : '';
+  return `<div class="${cls}" onclick="openDetail('${b.id}')">
+    <div class="tier-chip">${TIER_NAMES[b.tier]}</div>
+    <div class="badge-svg-wrap">${cardSvg(b)}${lockPip}</div>
+    <div class="badge-name">${title}</div>
+    <div class="badge-req">${sub}</div>
+    ${areasRow}${dateRow}
+  </div>`;
+}
+
+// ── Tab ───────────────────────────────────────────────────────────────
+function renderTab(tab){
+  const sH=document.getElementById('sec-hk');
+  const sM=document.getElementById('sec-ms');
+  const gH=document.getElementById('grid-hk');
+  const gM=document.getElementById('grid-ms');
+  if(tab==='locked'){
+    sH.style.display='';sM.style.display='';
+    gH.innerHTML=hkBadges.filter(b=>!b.earned).map(makeCard).join('');
+    gM.innerHTML=MS_DATA.filter(b=>!b.earned).map(makeCard).join('');
+  } else if(tab==='hk'){
+    sH.style.display='';sM.style.display='none';
+    gH.innerHTML=hkBadges.map(makeCard).join('');gM.innerHTML='';
+  } else if(tab==='milestone'){
+    sH.style.display='none';sM.style.display='';
+    gH.innerHTML='';gM.innerHTML=MS_DATA.map(makeCard).join('');
+  } else {
+    sH.style.display='';sM.style.display='';
+    gH.innerHTML=hkBadges.map(makeCard).join('');
+    gM.innerHTML=MS_DATA.map(makeCard).join('');
+  }
+}
+function setTab(el,tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');renderTab(tab);
+}
+
+// ── Detail ────────────────────────────────────────────────────────────
+function openDetail(id){
+  const b=allBadges.find(x=>x.id===id);
+  if(!b||!b.earned) return;
+  const tierLbl=TIER_NAMES[b.tier];
+  document.getElementById('d-tier').textContent=tierLbl+(b.type==='hk'?` · ${b.n} HKs`:' · Meilenstein');
+  document.getElementById('d-tier').style.color=TIER_COLORS[b.tier];
+  document.getElementById('d-name').textContent=b.type==='hk'?`${b.n} Handlungskompetenzen abgeschlossen`:b.name;
+  document.getElementById('d-cat').textContent=b.type==='hk'?'HK-Fortschritt-Badge':'Meilenstein-Badge';
+  document.getElementById('d-desc').textContent=b.desc;
+  document.getElementById('det-svg').innerHTML=cardSvg(b);
+
+  let meta='';
+  if(b.earnedDate) meta+=`<div class="d-row"><span class="d-key">Erhalten am</span><span class="d-val">${b.earnedDate}</span></div>`;
+  if(b.type==='hk'){
+    meta+=`<div class="d-row"><span class="d-key">Aktueller Stand</span><span class="d-val">${DONE_COUNT} / 25 HKs</span></div>`;
+    const next=TIERS.find(t=>t.n>b.n);
+    if(next) meta+=`<div class="d-row"><span class="d-key">Nächster Badge</span><span class="d-val">${TIER_NAMES[next.tier]} bei ${next.n} HKs</span></div>`;
+  }
+  document.getElementById('d-meta').innerHTML=meta;
+
+  let hkHtml='';
+  if(b.type==='hk'){
+    const ids=doneList.slice(0,b.n);
+    hkHtml=`<div class="d-sec" style="margin-top:18px">Enthaltene HKs (${ids.length})</div>`;
+    ids.forEach(hkId=>{
+      const hk=ALL_HKS.find(h=>h.id===hkId);
+      if(hk) hkHtml+=`<div class="d-hk-item">
+        <span class="d-hk-dot" style="background:${AREA_COLOR[hk.area]};box-shadow:0 0 5px ${AREA_COLOR[hk.area]}88"></span>
+        <span><strong>${hkId.toUpperCase()}</strong> – ${hk.name}</span>
+      </div>`;
+    });
+  }
+  document.getElementById('d-hklist').innerHTML=hkHtml;
+
+  document.getElementById('detail').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeDetail(){
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+(function init(){
+  const earned=allBadges.filter(b=>b.earned).length;
+  document.getElementById('hdr-earned').textContent=earned;
+  document.getElementById('hdr-hk').textContent=DONE_COUNT;
+  document.getElementById('ct-all').textContent=earned;
+  document.getElementById('ct-hk').textContent=hkBadges.filter(b=>b.earned).length;
+  document.getElementById('ct-ms').textContent=MS_DATA.filter(b=>b.earned).length;
+  document.getElementById('ct-locked').textContent=allBadges.filter(b=>!b.earned).length;
+  renderTab('all');
+})();
+</script>
 </body>
 </html>
